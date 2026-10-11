@@ -30,6 +30,7 @@ Enquanto o Supabase não está configurado, a página mostra produtos de exemplo
    insert into public.administradores (user_id)
    select id from auth.users where email = 'seu-email@exemplo.com';
    ```
+   Já tinha rodado uma versão antiga do `schema.sql` (com 4 categorias)? Rode também [`supabase/migracoes/001_categorias.sql`](supabase/migracoes/001_categorias.sql): ele cria o campo *tipo de produto* e move os produtos antigos para as novas categorias.
 5. **Pegue as chaves:** em *Project Settings > API*, copie a *Project URL* e a chave *anon public*.
 
 ## Rodando localmente
@@ -62,5 +63,6 @@ app/
 components/             # cards, catálogo, marca
 lib/                    # Supabase, produtos, WhatsApp
 supabase/schema.sql     # tabelas e regras de acesso
+supabase/migracoes/     # alterações para bancos já criados
 public/                 # logo
 ```

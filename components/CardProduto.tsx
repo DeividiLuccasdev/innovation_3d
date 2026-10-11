@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import IconeCategoria from "./IconeCategoria";
-import { formatarPreco, type Produto } from "@/lib/produtos";
+import { formatarPreco, nomeCurto, type Produto } from "@/lib/produtos";
 import { linkWhatsApp } from "@/lib/whatsapp";
 
 export default function CardProduto({
@@ -23,7 +23,7 @@ export default function CardProduto({
     <article className={`card ${produto.esgotado ? "esgotado" : ""}`}>
       <div className="foto">
         <div className="etiquetas">
-          <span className="tag">{produto.categoria}</span>
+          <span className="tag" title={produto.categoria}>{nomeCurto(produto.categoria)}</span>
           {produto.destaque && <span className="tag destaque">Destaque</span>}
         </div>
 
@@ -51,6 +51,7 @@ export default function CardProduto({
       </div>
 
       <div className="info">
+        {produto.subcategoria && <span className="tipo mono">{produto.subcategoria}</span>}
         <h3>{produto.nome}</h3>
         {produto.descricao && <p style={{ margin: 0, color: "var(--muted)" }}>{produto.descricao}</p>}
         {specs.length > 0 && <div className="specs mono">{specs.join(" · ")}</div>}
@@ -73,6 +74,18 @@ export default function CardProduto({
             </a>
           )}
         </div>
+        <a
+          className="personalizar"
+          target="_blank"
+          rel="noopener noreferrer"
+          href={linkWhatsApp(
+            produto.esgotado
+              ? `Olá! Vi que ${produto.nome} está esgotado. Vocês fazem sob encomenda?`
+              : `Olá! Quero personalizar: ${produto.nome} (cor, tamanho ou nome)`
+          )}
+        >
+          {produto.esgotado ? "Encomendar mesmo assim" : "Quero personalizar"}
+        </a>
       </div>
 
       {children}

@@ -6,7 +6,15 @@ create table if not exists public.produtos (
   nome text not null check (char_length(nome) between 1 and 120),
   descricao text,
   preco numeric(10, 2) not null check (preco >= 0),
-  categoria text not null check (categoria in ('Decoração', 'Geek', 'Utilidades', 'Personalizados')),
+  categoria text not null constraint produtos_categoria_check check (categoria in (
+    'Decoração residencial',
+    'Decoração personalizada',
+    'Festas e eventos',
+    'Escritórios e ambientes comerciais',
+    'Decoração geek e temática',
+    'Organização e decoração funcional'
+  )),
+  subcategoria text,
   material text,
   tamanho text,
   tempo_impressao text,

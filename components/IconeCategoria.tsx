@@ -1,23 +1,39 @@
 import type { Categoria } from "@/lib/produtos";
 
 // Ilustração usada quando o produto ainda não tem foto
-export default function IconeCategoria({ categoria }: { categoria: Categoria }) {
+export default function IconeCategoria({ categoria }: { categoria: Categoria | string }) {
   switch (categoria) {
-    case "Geek":
+    case "Decoração geek e temática":
       return (
         <svg viewBox="0 0 100 120" fill="none" stroke="#E1262D" strokeWidth="4" strokeLinejoin="round">
           <path d="M50 10l34 20v40L50 110 16 70V30z" fill="#FFE1E2" />
           <path d="M16 30l34 20 34-20M50 50v60" />
         </svg>
       );
-    case "Utilidades":
+    case "Escritórios e ambientes comerciais":
       return (
         <svg viewBox="0 0 100 120" fill="none" stroke="#0B2F7A" strokeWidth="4" strokeLinejoin="round">
           <rect x="14" y="40" width="72" height="60" rx="8" fill="#E6ECF8" />
           <path d="M30 40V22h40v18M14 64h72" />
         </svg>
       );
-    case "Personalizados":
+    case "Festas e eventos":
+      return (
+        <svg viewBox="0 0 100 120" fill="none" stroke="#E1262D" strokeWidth="4" strokeLinejoin="round">
+          <rect x="16" y="62" width="68" height="40" rx="6" fill="#FFE1E2" />
+          <rect x="26" y="40" width="48" height="22" rx="5" fill="#DCE8FF" stroke="#1660E8" />
+          <path d="M50 40V24M50 24c-5-6 0-12 0-14 0 2 5 8 0 14z" />
+        </svg>
+      );
+    case "Organização e decoração funcional":
+      return (
+        <svg viewBox="0 0 100 120" fill="none" stroke="#1660E8" strokeWidth="4" strokeLinejoin="round">
+          <rect x="12" y="50" width="76" height="46" rx="8" fill="#DCE8FF" />
+          <path d="M37 50v46M63 50v46" />
+          <rect x="22" y="22" width="22" height="28" rx="4" fill="#FFE1E2" stroke="#E1262D" />
+        </svg>
+      );
+    case "Decoração personalizada":
       return (
         <svg viewBox="0 0 100 120" fill="none" stroke="#1660E8" strokeWidth="4" strokeLinejoin="round">
           <circle cx="50" cy="34" r="18" fill="#DCE8FF" />

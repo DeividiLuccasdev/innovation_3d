@@ -4,7 +4,7 @@ import { useCallback, useEffect, useState, type FormEvent } from "react";
 import type { Session } from "@supabase/supabase-js";
 import CardProduto from "@/components/CardProduto";
 import Marca from "@/components/Marca";
-import { CATEGORIAS, ordenarProdutos, type Categoria, type Produto } from "@/lib/produtos";
+import { CATALOGO, CATEGORIAS, ordenarProdutos, type Categoria, type Produto } from "@/lib/produtos";
 import { BUCKET_FOTOS, supabase, supabaseConfigurado } from "@/lib/supabase";
 
 type Formulario = {
@@ -12,6 +12,7 @@ type Formulario = {
   descricao: string;
   preco: string;
   categoria: Categoria;
+  subcategoria: string;
   material: string;
   tamanho: string;
   tempo_impressao: string;
@@ -22,7 +23,8 @@ const VAZIO: Formulario = {
   nome: "",
   descricao: "",
   preco: "",
-  categoria: "Decoração",
+  categoria: "Decoração residencial",
+  subcategoria: "",
   material: "",
   tamanho: "",
   tempo_impressao: "",
@@ -186,7 +188,8 @@ function Painel({ email }: { email: string }) {
       nome: p.nome,
       descricao: p.descricao ?? "",
       preco: p.preco.toFixed(2).replace(".", ","),
-      categoria: p.categoria,
+      categoria: CATEGORIAS.includes(p.categoria) ? p.categoria : VAZIO.categoria,
+      subcategoria: p.subcategoria ?? "",
       material: p.material ?? "",
       tamanho: p.tamanho ?? "",
       tempo_impressao: p.tempo_impressao ?? "",
@@ -236,6 +239,7 @@ function Painel({ email }: { email: string }) {
         descricao: form.descricao.trim() || null,
         preco,
         categoria: form.categoria,
+        subcategoria: form.subcategoria || null,
         material: form.material.trim() || null,
         tamanho: form.tamanho.trim() || null,
         tempo_impressao: form.tempo_impressao.trim() || null,
@@ -304,8 +308,15 @@ function Painel({ email }: { email: string }) {
           <label>Preço (R$)<input id="p-preco" required inputMode="decimal" placeholder="49,90" {...campo("preco")} /></label>
           <label>
             Categoria
-            <select id="p-categoria" value={form.categoria} onChange={(e) => setForm({ ...form, categoria: e.target.value as Categoria })}>
+            <select id="p-categoria" value={form.categoria} onChange={(e) => setForm({ ...form, categoria: e.target.value as Categoria, subcategoria: "" })}>
               {CATEGORIAS.map((c) => <option key={c}>{c}</option>)}
+            </select>
+          </label>
+          <label>
+            Tipo de produto
+            <select id="p-subcategoria" value={form.subcategoria} onChange={(e) => setForm({ ...form, subcategoria: e.target.value })}>
+              <option value="">Sem tipo definido</option>
+              {CATALOGO[form.categoria].itens.map((t) => <option key={t}>{t}</option>)}
             </select>
           </label>
           <label>Material<input id="p-material" placeholder="PLA" {...campo("material")} /></label>
