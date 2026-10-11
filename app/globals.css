@@ -89,7 +89,12 @@ section.bloco{padding-block:56px}
 .card{background:var(--surface);border:1px solid var(--line);border-radius:20px;overflow:hidden;display:flex;flex-direction:column;transition:transform .2s,box-shadow .2s}
 .card:hover{transform:translateY(-3px);box-shadow:0 22px 40px -28px rgba(11,47,122,.5)}
 .foto{position:relative;aspect-ratio:4/3;max-width:100%;background:linear-gradient(160deg,#EAF1FF,#FFFFFF);overflow:hidden}
-.foto::after{content:"";position:absolute;inset:0;background:repeating-linear-gradient(0deg,rgba(11,47,122,.06) 0 1px,transparent 1px 5px)}
+.foto::after{content:"";position:absolute;inset:0;background:repeating-linear-gradient(0deg,rgba(11,47,122,.06) 0 1px,transparent 1px 5px);pointer-events:none}
+.foto-abrir{display:block;width:100%;height:100%;padding:0;border:0;background:none;cursor:zoom-in}
+.foto-seta{position:absolute;top:50%;transform:translateY(-50%);z-index:4;width:36px;height:36px;border-radius:50%;border:0;background:rgba(255,255,255,.9);color:var(--blue-deep);font-size:1.5rem;line-height:1;box-shadow:0 4px 12px -4px rgba(0,0,0,.35);cursor:pointer}
+.foto-seta.esquerda{left:8px}
+.foto-seta.direita{right:8px}
+.foto-contador{position:absolute;bottom:10px;right:10px;z-index:4;background:rgba(10,20,45,.7);color:#fff;font-size:.72rem;padding:3px 8px;border-radius:999px}
 .foto img{width:100%;height:100%;object-fit:cover;display:block}
 .foto svg{position:absolute;inset:18% 25%;width:50%;height:64%}
 .etiquetas{position:absolute;top:12px;left:12px;display:flex;gap:6px;z-index:2}
@@ -139,13 +144,16 @@ section.bloco{padding-block:56px}
 .vitrine-painel h3{margin:0;font-size:1.2rem;font-weight:800}
 .vitrine-painel p{margin:0}
 .vitrine-fotos{width:100%;display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:12px}
-.vitrine-fotos a{display:grid;gap:4px;color:#fff;text-decoration:none}
-.vitrine-foto{position:relative;aspect-ratio:1;border-radius:14px;overflow:hidden;background:linear-gradient(160deg,#EAF1FF,#FFFFFF)}
+.vitrine-item{display:grid;gap:6px;min-width:0}
+.vitrine-item a{display:grid;gap:2px;color:#fff;text-decoration:none}
+.vitrine-foto{position:relative;display:block;width:100%;padding:0;border:0;aspect-ratio:1;border-radius:14px;overflow:hidden;background:linear-gradient(160deg,#EAF1FF,#FFFFFF)}
+button.vitrine-foto{cursor:zoom-in}
+.vitrine-foto .mono{position:absolute;bottom:8px;right:8px;background:rgba(10,20,45,.7);color:#fff;font-size:.7rem;padding:2px 8px;border-radius:999px}
 .vitrine-foto img{width:100%;height:100%;object-fit:cover;display:block;transition:transform .3s}
-.vitrine-fotos a:hover img{transform:scale(1.05)}
+.vitrine-foto:hover img{transform:scale(1.05)}
 .vitrine-foto svg{position:absolute;inset:15% 25%;width:50%;height:70%}
-.vitrine-fotos span{font-weight:600;font-size:.9rem}
-.vitrine-fotos small{color:#C9D6F5}
+.vitrine-item a span{font-weight:600;font-size:.9rem}
+.vitrine-item a small{color:#C9D6F5}
 
 /* como funciona: é uma sequência real, então leva números */
 .passos{display:grid;grid-template-columns:repeat(4,1fr);gap:18px;counter-reset:passo}
@@ -216,9 +224,21 @@ footer .wrap{display:flex;flex-wrap:wrap;gap:20px;justify-content:space-between;
 .fotos-form figure{position:relative;margin:0}
 .fotos-form img{width:84px;height:64px;object-fit:cover;border-radius:8px;border:1px solid var(--line);display:block}
 .fotos-form figure button{position:absolute;top:-8px;right:-8px;width:24px;height:24px;border-radius:50%;border:0;background:var(--red);color:#fff;font-weight:900;line-height:1}
-.galeria-mini{display:flex;gap:6px;position:absolute;bottom:10px;left:10px;z-index:2}
-.galeria-mini button{width:10px;height:10px;border-radius:50%;border:2px solid #fff;background:rgba(255,255,255,.5);padding:0}
-.galeria-mini button[aria-current="true"]{background:#fff}
+/* galeria em tela cheia */
+.galeria{position:fixed;inset:0;z-index:100;background:#070D1F;display:grid;grid-template-rows:auto 1fr auto;padding:env(safe-area-inset-top,0) 0 env(safe-area-inset-bottom,0)}
+.galeria-topo{display:flex;justify-content:space-between;align-items:center;gap:12px;padding:12px 16px;color:#fff;font-weight:700}
+.galeria-topo small{color:#AFC0E6;font-weight:400}
+.galeria-fechar{width:44px;height:44px;border-radius:50%;border:0;background:rgba(255,255,255,.12);color:#fff;font-size:1.8rem;line-height:1;cursor:pointer;flex:none}
+.galeria-palco{--margem:56px;position:relative;min-height:0;overflow:hidden;touch-action:pan-y}
+.galeria-palco img{position:absolute;top:0;bottom:0;left:var(--margem);width:calc(100% - 2 * var(--margem));height:100%;object-fit:contain;user-select:none}
+.galeria-seta{position:absolute;top:50%;transform:translateY(-50%);width:44px;height:44px;border-radius:50%;border:0;background:rgba(255,255,255,.14);color:#fff;font-size:2rem;line-height:1;cursor:pointer}
+.galeria-seta.esquerda{left:8px}
+.galeria-seta.direita{right:8px}
+.galeria-miniaturas{display:flex;gap:8px;justify-content:center;overflow-x:auto;padding:12px 16px}
+.galeria-miniaturas button{flex:none;width:56px;height:56px;padding:0;border:2px solid transparent;border-radius:10px;overflow:hidden;background:none;opacity:.6;cursor:pointer}
+.galeria-miniaturas button[aria-current="true"]{border-color:#fff;opacity:1}
+.galeria-miniaturas img{width:100%;height:100%;object-fit:cover;display:block}
+@media (max-width:640px){.galeria-palco{--margem:0px}.galeria-seta{background:rgba(0,0,0,.45)}}
 
 /* selo do WhatsApp no rodapé */
 .badge-whatsapp{display:inline-flex;align-items:center;gap:10px;background:#25D366;color:#fff;text-decoration:none;border-radius:999px;padding:8px 18px 8px 12px;font-weight:700;font-variant-numeric:tabular-nums;box-shadow:0 10px 22px -12px #128C7E;transition:transform .15s,background .15s}

@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import Galeria from "./Galeria";
 import IconeCategoria from "./IconeCategoria";
 import { formatarPreco, nomeCurto, type Produto } from "@/lib/produtos";
 import { linkWhatsApp } from "@/lib/whatsapp";
@@ -13,6 +14,11 @@ export default function CardProduto({
   children?: React.ReactNode;
 }) {
   const [fotoAtual, setFotoAtual] = useState(0);
+  const [ampliada, setAmpliada] = useState(false);
+  const totalFotos = produto.fotos.length;
+  // A lista de fotos pode diminuir no admin; volta para a primeira se o índice sobrar
+  const indice = fotoAtual < totalFotos ? fotoAtual : 0;
+  const mudarFoto = (passo: number) => setFotoAtual((indice + passo + totalFotos) % totalFotos);
   const specs = [
     produto.material,
     produto.tamanho,
@@ -27,24 +33,27 @@ export default function CardProduto({
           {produto.destaque && <span className="tag destaque">Destaque</span>}
         </div>
 
-        {produto.fotos.length > 0 ? (
-          // eslint-disable-next-line @next/next/no-img-element
-          <img src={produto.fotos[fotoAtual] ?? produto.fotos[0]} alt={produto.nome} loading="lazy" />
+        {totalFotos > 0 ? (
+          <button type="button" className="foto-abrir" aria-label={`Ampliar fotos de ${produto.nome}`} onClick={() => setAmpliada(true)}>
+            {/* eslint-disable-next-line @next/next/no-img-element */}
+            <img src={produto.fotos[indice]} alt={produto.nome} loading="lazy" />
+          </button>
         ) : (
           <IconeCategoria categoria={produto.categoria} />
         )}
 
-        {produto.fotos.length > 1 && (
-          <div className="galeria-mini">
-            {produto.fotos.map((foto, i) => (
-              <button
-                key={foto}
-                aria-label={`Foto ${i + 1}`}
-                aria-current={i === fotoAtual}
-                onClick={() => setFotoAtual(i)}
-              />
-            ))}
-          </div>
+        {totalFotos > 1 && (
+          <>
+            <button type="button" className="foto-seta esquerda" aria-label="Foto anterior" onClick={() => mudarFoto(-1)}>
+              ‹
+            </button>
+            <button type="button" className="foto-seta direita" aria-label="Próxima foto" onClick={() => mudarFoto(1)}>
+              ›
+            </button>
+            <span className="foto-contador mono">
+              {indice + 1}/{totalFotos}
+            </span>
+          </>
         )}
 
         {produto.esgotado && <div className="faixa-esgotado">ESGOTADO</div>}
@@ -89,6 +98,10 @@ export default function CardProduto({
       </div>
 
       {children}
+
+      {ampliada && (
+        <Galeria fotos={produto.fotos} titulo={produto.nome} inicial={indice} aoFechar={() => setAmpliada(false)} />
+      )}
     </article>
   );
 }
