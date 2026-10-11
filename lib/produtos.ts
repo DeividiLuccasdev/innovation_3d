@@ -30,6 +30,7 @@ export const CATALOGO: Record<Categoria, { curto: string; itens: string[]; aviso
       "Luminárias decorativas",
       "Abajures personalizados",
       "Enfeites para estantes",
+      "Arte sacra",
     ],
   },
   "Decoração personalizada": {
