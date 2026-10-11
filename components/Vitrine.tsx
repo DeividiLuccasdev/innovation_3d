@@ -4,6 +4,7 @@ import { useState } from "react";
 import IconeCategoria from "./IconeCategoria";
 import { formatarPreco, ordenarProdutos, type Produto } from "@/lib/produtos";
 import { VITRINE, produtosDoGrupo } from "@/lib/vitrine";
+import { INSTAGRAM_URL } from "@/lib/instagram";
 import { linkWhatsApp } from "@/lib/whatsapp";
 
 const MAX_FOTOS = 8;
@@ -66,6 +67,9 @@ export default function Vitrine({ produtos }: { produtos: Produto[] }) {
             href={linkWhatsApp(`Olá! Quero um orçamento de: ${grupo.titulo.toLowerCase()}`)}
           >
             Pedir orçamento desta linha
+          </a>
+          <a className="vitrine-insta" target="_blank" rel="noopener noreferrer" href={INSTAGRAM_URL}>
+            Ver mais trabalhos no Instagram
           </a>
         </div>
       )}
