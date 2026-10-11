@@ -1,5 +1,6 @@
 /* eslint-disable @next/next/no-img-element */
 import Catalogo from "@/components/Catalogo";
+import IconeWhatsApp from "@/components/IconeWhatsApp";
 import Marca from "@/components/Marca";
 import { PRODUTOS_EXEMPLO, type Produto } from "@/lib/produtos";
 import { supabase, supabaseConfigurado } from "@/lib/supabase";
@@ -42,6 +43,7 @@ export default async function Home() {
             rel="noopener noreferrer"
             href={linkWhatsApp("Olá! Vim pelo site da Inovation 3D.")}
           >
+            <IconeWhatsApp />
             WhatsApp
           </a>
         </div>
@@ -136,12 +138,19 @@ export default async function Home() {
       <footer>
         <div className="wrap">
           <Marca />
-          <span>
-            WhatsApp:{" "}
-            <a className="mono" target="_blank" rel="noopener noreferrer" href={linkWhatsApp("Olá!")}>
+          <a
+            className="badge-whatsapp"
+            target="_blank"
+            rel="noopener noreferrer"
+            href={linkWhatsApp("Olá! Vim pelo site da Inovation 3D.")}
+            aria-label={`Falar no WhatsApp: ${telefoneFormatado()}`}
+          >
+            <IconeWhatsApp tamanho={22} />
+            <span>
+              <small>Fale no WhatsApp</small>
               {telefoneFormatado()}
-            </a>
-          </span>
+            </span>
+          </a>
           <span>© {new Date().getFullYear()} Inovation 3D</span>
         </div>
       </footer>
