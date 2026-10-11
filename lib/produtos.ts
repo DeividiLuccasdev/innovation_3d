@@ -5,6 +5,7 @@ export const CATEGORIAS = [
   "Escritórios e ambientes comerciais",
   "Decoração geek e temática",
   "Organização e decoração funcional",
+  "Arte sacra",
 ] as const;
 
 export type Categoria = (typeof CATEGORIAS)[number];
@@ -111,6 +112,29 @@ export const CATALOGO: Record<Categoria, { curto: string; itens: string[]; aviso
       "Caixas organizadoras decorativas",
       "Porta-guardanapos",
       "Suportes decorativos para acessórios",
+    ],
+  },
+  "Arte sacra": {
+    curto: "Arte sacra",
+    itens: [
+      "Imagens de santos",
+      "Nossa Senhora Aparecida",
+      "Nossa Senhora de Fátima",
+      "Nossa Senhora das Graças",
+      "Sagrada Família",
+      "Crucifixos",
+      "Anjos decorativos",
+      "Divino Espírito Santo",
+      "Oratórios",
+      "Capelinhas",
+      "Presépios",
+      "Quadros religiosos em relevo",
+      "Placas com orações",
+      "Luminárias religiosas",
+      "Porta-terços",
+      "Lembrancinhas de batizado",
+      "Lembrancinhas de primeira comunhão",
+      "Lembrancinhas de crisma",
     ],
   },
 };

@@ -30,7 +30,7 @@ Enquanto o Supabase não está configurado, a página mostra produtos de exemplo
    insert into public.administradores (user_id)
    select id from auth.users where email = 'seu-email@exemplo.com';
    ```
-   Já tinha rodado uma versão antiga do `schema.sql` (com 4 categorias)? Rode também [`supabase/migracoes/001_categorias.sql`](supabase/migracoes/001_categorias.sql): ele cria o campo *tipo de produto* e move os produtos antigos para as novas categorias.
+   Já tinha rodado uma versão antiga do `schema.sql` (com 4 categorias)? Rode também [`supabase/migracoes/001_categorias.sql`](supabase/migracoes/001_categorias.sql): ele cria o campo *tipo de produto* e move os produtos antigos para as novas categorias. Depois rode [`supabase/migracoes/002_arte_sacra.sql`](supabase/migracoes/002_arte_sacra.sql), que libera a categoria *Arte sacra*.
 5. **Pegue as chaves:** em *Project Settings > API*, copie a *Project URL* e a chave *anon public*.
 
 ## Rodando localmente

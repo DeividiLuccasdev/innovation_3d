@@ -59,7 +59,7 @@ export default async function Home() {
                 <br />A gente <strong>imprime.</strong>
               </h1>
               <p className="lead">
-                Decoração para casa, peças personalizadas, festas, empresas, itens geek e organizadores,
+                Decoração para casa, peças personalizadas, festas, empresas, itens geek, organizadores e arte sacra,
                 produzidos camada por camada com acabamento caprichado.
               </p>
               <div className="acoes">
