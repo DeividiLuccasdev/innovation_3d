@@ -59,8 +59,8 @@ export default async function Home() {
                 <br />A gente <strong>imprime.</strong>
               </h1>
               <p className="lead">
-                Decoração, presentes geek, utilidades e peças personalizadas, produzidas camada por
-                camada com acabamento caprichado.
+                Decoração para casa, peças personalizadas, festas, empresas, itens geek e organizadores,
+                produzidos camada por camada com acabamento caprichado.
               </p>
               <div className="acoes">
                 <a className="btn btn-azul" href="#produtos">Ver produtos</a>

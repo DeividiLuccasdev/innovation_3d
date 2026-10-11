@@ -68,6 +68,16 @@ section.bloco{padding-block:56px}
 .filtros{display:flex;flex-wrap:wrap;gap:8px}
 .filtro{border:1.5px solid var(--line);background:var(--surface);border-radius:999px;padding:8px 14px;font-weight:600;color:var(--muted)}
 .filtro[aria-pressed="true"]{background:var(--blue-deep);border-color:var(--blue-deep);color:#fff}
+.subcategorias{background:var(--surface);border:1px solid var(--line);border-radius:20px;padding:18px;margin-bottom:22px}
+.subcategorias h3{font-size:1.25rem;font-weight:800;margin:0 0 12px;color:var(--blue-deep)}
+.filtro-mini{padding:6px 12px;font-size:.85rem}
+.aviso-categoria{margin:12px 0 0;font-size:.85rem;color:var(--muted)}
+.tipo{font-size:.72rem;color:var(--blue);text-transform:uppercase;letter-spacing:.04em}
+.personalizar{font-size:.85rem;font-weight:600;color:var(--blue);text-decoration:underline;text-underline-offset:3px;align-self:flex-start}
+.sob-encomenda{grid-column:1/-1;display:flex;flex-direction:column;align-items:flex-start;gap:10px;border:1.5px dashed var(--line);border-radius:20px;padding:28px;background:var(--surface)}
+.sob-encomenda h3{margin:0;font-size:1.4rem;font-weight:800}
+.sob-encomenda p{margin:0;color:var(--muted);max-width:34rem}
+.sob-encomenda .mono{color:var(--red,#E1262D);text-transform:uppercase;font-size:.75rem}
 .aviso-exemplo{display:inline-block;margin-bottom:14px;color:var(--muted)}
 
 .grade{display:grid;grid-template-columns:repeat(auto-fill,minmax(250px,1fr));gap:20px}
@@ -163,3 +173,8 @@ footer .wrap{display:flex;flex-wrap:wrap;gap:20px;justify-content:space-between;
 .badge-whatsapp:hover{background:#1EBE5A;transform:translateY(-1px)}
 .badge-whatsapp span{display:grid;line-height:1.15}
 .badge-whatsapp small{font-weight:600;font-size:.72rem;opacity:.9;letter-spacing:.02em}
+@media (max-width:640px){
+  .subcategorias{padding:14px}
+  .subcategorias .filtros{flex-wrap:nowrap;overflow-x:auto;scrollbar-width:none;margin-inline:-14px;padding-inline:14px}
+  .subcategorias .filtro{white-space:nowrap;flex:none}
+}
