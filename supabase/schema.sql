@@ -12,7 +12,8 @@ create table if not exists public.produtos (
     'Festas e eventos',
     'Escritórios e ambientes comerciais',
     'Decoração geek e temática',
-    'Organização e decoração funcional'
+    'Organização e decoração funcional',
+    'Arte sacra'
   )),
   subcategoria text,
   material text,
