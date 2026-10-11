@@ -109,6 +109,7 @@ export const CATALOGO: Record<Categoria, { curto: string; itens: string[]; aviso
       "Suportes para livros",
       "Porta-controles remotos",
       "Organizadores de cabos",
+      "Peças de reposição sob medida",
       "Suportes para plantas",
       "Caixas organizadoras decorativas",
       "Porta-guardanapos",

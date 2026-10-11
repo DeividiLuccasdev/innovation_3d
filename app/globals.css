@@ -126,7 +126,21 @@ section.bloco{padding-block:56px}
 .encomenda h2 span{color:#FF6B6F}
 .encomenda p{color:#C9D6F5;max-width:36rem}
 .encomenda ul{list-style:none;padding:0;margin:0;display:grid;gap:10px}
-.encomenda li{background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.14);border-radius:14px;padding:12px 14px}
+.encomenda li button{width:100%;display:flex;justify-content:space-between;align-items:center;gap:12px;text-align:left;font:inherit;color:#fff;background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.14);border-radius:14px;padding:12px 14px;cursor:pointer;transition:background .2s}
+.encomenda li button:hover{background:rgba(255,255,255,.16)}
+.encomenda li button[aria-expanded="true"]{background:#fff;color:var(--blue-deep);font-weight:700}
+.encomenda li button span{font-size:1.3rem;line-height:1}
+.vitrine-painel{grid-column:1/-1;background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.14);border-radius:20px;padding:20px;display:grid;gap:14px;justify-items:start}
+.vitrine-painel h3{margin:0;font-size:1.2rem;font-weight:800}
+.vitrine-painel p{margin:0}
+.vitrine-fotos{width:100%;display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:12px}
+.vitrine-fotos a{display:grid;gap:4px;color:#fff;text-decoration:none}
+.vitrine-foto{position:relative;aspect-ratio:1;border-radius:14px;overflow:hidden;background:linear-gradient(160deg,#EAF1FF,#FFFFFF)}
+.vitrine-foto img{width:100%;height:100%;object-fit:cover;display:block;transition:transform .3s}
+.vitrine-fotos a:hover img{transform:scale(1.05)}
+.vitrine-foto svg{position:absolute;inset:15% 25%;width:50%;height:70%}
+.vitrine-fotos span{font-weight:600;font-size:.9rem}
+.vitrine-fotos small{color:#C9D6F5}
 
 /* como funciona: é uma sequência real, então leva números */
 .passos{display:grid;grid-template-columns:repeat(4,1fr);gap:18px;counter-reset:passo}
@@ -158,6 +172,7 @@ footer .wrap{display:flex;flex-wrap:wrap;gap:20px;justify-content:space-between;
 
 @media (max-width:900px){
   .hero .wrap,.encomenda{grid-template-columns:1fr}
+  .vitrine-fotos{grid-template-columns:repeat(2,1fr)}
   .passos{grid-template-columns:repeat(2,1fr)}
   nav.links{display:none}
   .btn-admin{margin-left:auto}

@@ -1,6 +1,7 @@
 /* eslint-disable @next/next/no-img-element */
 import Catalogo from "@/components/Catalogo";
 import Frete from "@/components/Frete";
+import Vitrine from "@/components/Vitrine";
 import IconeWhatsApp from "@/components/IconeWhatsApp";
 import Marca from "@/components/Marca";
 import { PRODUTOS_EXEMPLO, type Produto } from "@/lib/produtos";
@@ -114,12 +115,7 @@ export default async function Home() {
                   Pedir orçamento pelo WhatsApp
                 </a>
               </div>
-              <ul>
-                <li>Chaveiros e brindes com nome ou logo</li>
-                <li>Peças de reposição e suportes sob medida</li>
-                <li>Miniaturas, action figures e decoração temática</li>
-                <li>Presentes personalizados para datas especiais</li>
-              </ul>
+              <Vitrine produtos={produtos} />
             </div>
           </div>
         </section>
