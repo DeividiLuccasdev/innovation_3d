@@ -6,6 +6,7 @@ export const CATEGORIAS = [
   "Decoração geek e temática",
   "Organização e decoração funcional",
   "Arte sacra",
+  "Encomendas personalizadas",
 ] as const;
 
 export type Categoria = (typeof CATEGORIAS)[number];
@@ -114,6 +115,16 @@ export const CATALOGO: Record<Categoria, { curto: string; itens: string[]; aviso
       "Caixas organizadoras decorativas",
       "Porta-guardanapos",
       "Suportes decorativos para acessórios",
+    ],
+  },
+  // Mesmas linhas da seção "Tem uma ideia?" (lib/vitrine.ts)
+  "Encomendas personalizadas": {
+    curto: "Encomendas",
+    itens: [
+      "Chaveiros e brindes com nome ou logo",
+      "Peças de reposição e suportes sob medida",
+      "Miniaturas, action figures e decoração temática",
+      "Presentes e decoração para datas especiais",
     ],
   },
   "Arte sacra": {

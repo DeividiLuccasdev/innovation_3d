@@ -13,7 +13,8 @@ create table if not exists public.produtos (
     'Escritórios e ambientes comerciais',
     'Decoração geek e temática',
     'Organização e decoração funcional',
-    'Arte sacra'
+    'Arte sacra',
+    'Encomendas personalizadas'
   )),
   subcategoria text,
   material text,
