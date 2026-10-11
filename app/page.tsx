@@ -1,11 +1,14 @@
 /* eslint-disable @next/next/no-img-element */
+import Link from "next/link";
 import Catalogo from "@/components/Catalogo";
 import Frete from "@/components/Frete";
 import Vitrine from "@/components/Vitrine";
+import IconeInstagram from "@/components/IconeInstagram";
 import IconeWhatsApp from "@/components/IconeWhatsApp";
 import Marca from "@/components/Marca";
 import { PRODUTOS_EXEMPLO, type Produto } from "@/lib/produtos";
 import { supabase, supabaseConfigurado } from "@/lib/supabase";
+import { INSTAGRAM_ARROBA, INSTAGRAM_URL } from "@/lib/instagram";
 import { linkWhatsApp, telefoneFormatado } from "@/lib/whatsapp";
 
 // Atualiza o catálogo no máximo a cada 30 segundos
@@ -39,15 +42,27 @@ export default async function Home() {
             <a href="#encomenda">Sob encomenda</a>
             <a href="#frete">Frete</a>
             <a href="#como-funciona">Como funciona</a>
+            <Link href="/admin" className="link-admin">Admin</Link>
           </nav>
+          <a
+            className="btn-insta"
+            target="_blank"
+            rel="noopener noreferrer"
+            href={INSTAGRAM_URL}
+            aria-label={`Instagram ${INSTAGRAM_ARROBA}`}
+            title={INSTAGRAM_ARROBA}
+          >
+            <IconeInstagram tamanho={20} />
+          </a>
           <a
             className="btn btn-vermelho btn-admin"
             target="_blank"
             rel="noopener noreferrer"
             href={linkWhatsApp("Olá! Vim pelo site da Innovation 3D.")}
+            aria-label="WhatsApp"
           >
             <IconeWhatsApp />
-            WhatsApp
+            <span className="rotulo">WhatsApp</span>
           </a>
         </div>
       </header>
@@ -154,7 +169,25 @@ export default async function Home() {
               {telefoneFormatado()}
             </span>
           </a>
-          <span>© {new Date().getFullYear()} Innovation 3D</span>
+          <a
+            className="badge-instagram"
+            target="_blank"
+            rel="noopener noreferrer"
+            href={INSTAGRAM_URL}
+            aria-label={`Seguir no Instagram: ${INSTAGRAM_ARROBA}`}
+          >
+            <IconeInstagram tamanho={22} />
+            <span>
+              <small>Siga no Instagram</small>
+              {INSTAGRAM_ARROBA}
+            </span>
+          </a>
+          <span>
+            © {new Date().getFullYear()} Innovation 3D ·{" "}
+            <Link href="/admin" className="link-admin">
+              Área do administrador
+            </Link>
+          </span>
         </div>
       </footer>
     </>
