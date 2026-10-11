@@ -139,6 +139,11 @@ export const CATALOGO: Record<Categoria, { curto: string; itens: string[]; aviso
   },
 };
 
+// Tipos em ordem alfabética, no site e no painel
+for (const grupo of Object.values(CATALOGO)) {
+  grupo.itens.sort((a, b) => a.localeCompare(b, "pt-BR"));
+}
+
 // Nome curto da categoria; cai no próprio nome se for uma categoria antiga
 export const nomeCurto = (categoria: string) =>
   CATALOGO[categoria as Categoria]?.curto ?? categoria;
