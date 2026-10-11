@@ -2,12 +2,11 @@
 
 import { useState, type FormEvent } from "react";
 import { formatarPreco } from "@/lib/produtos";
-import { PACOTES, formatarCep, type Pacote, type RespostaFrete } from "@/lib/frete";
+import { PACOTE, formatarCep, type RespostaFrete } from "@/lib/frete";
 import { linkWhatsApp } from "@/lib/whatsapp";
 
 export default function Frete() {
   const [cep, setCep] = useState("");
-  const [pacote, setPacote] = useState<Pacote>("medio");
   const [consultando, setConsultando] = useState(false);
   const [resultado, setResultado] = useState<RespostaFrete | null>(null);
   const [erro, setErro] = useState("");
@@ -21,7 +20,7 @@ export default function Frete() {
       const resposta = await fetch("/api/frete", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ cep, pacote }),
+        body: JSON.stringify({ cep }),
       });
       const dados = await resposta.json();
       if (!resposta.ok) setErro(dados.erro ?? "Não foi possível consultar agora.");
@@ -34,13 +33,14 @@ export default function Frete() {
   }
 
   const destino = resultado?.cidade ? `${resultado.cidade}/${resultado.uf}` : `CEP ${cep}`;
-  const mensagem = `Olá! Quero saber o frete para o CEP ${cep} (pacote ${PACOTES[pacote].nome.toLowerCase()}).`;
+  const mensagem = `Olá! Quero saber o frete para o CEP ${cep}.`;
+  const medidas = `${PACOTE.comprimento} × ${PACOTE.largura} × ${PACOTE.altura} cm e ${String(PACOTE.peso).replace(".", ",")} kg`;
 
   return (
     <div className="frete">
       <div>
         <h2>Calcular frete</h2>
-        <p>Enviamos pelos Correios para todo o Brasil. Informe seu CEP e o tamanho da peça.</p>
+        <p>Enviamos pelos Correios para qualquer cidade do Brasil. Informe o CEP de entrega.</p>
         <a
           className="mono dica"
           href="https://buscacepinter.correios.com.br/app/endereco/index.php"
@@ -64,18 +64,6 @@ export default function Frete() {
             onChange={(e) => setCep(formatarCep(e.target.value))}
           />
         </label>
-        <fieldset>
-          <legend>Tamanho do pacote</legend>
-          {(Object.keys(PACOTES) as Pacote[]).map((p) => (
-            <label key={p} className="opcao-pacote">
-              <input type="radio" name="pacote" value={p} checked={pacote === p} onChange={() => setPacote(p)} />
-              <span>
-                <b>{PACOTES[p].nome}</b>
-                <small>{PACOTES[p].exemplo}</small>
-              </span>
-            </label>
-          ))}
-        </fieldset>
         <button className="btn btn-azul" type="submit" disabled={consultando}>
           {consultando ? "Consultando…" : "Calcular frete"}
         </button>
@@ -95,7 +83,10 @@ export default function Frete() {
                   </li>
                 ))}
               </ul>
-              <small>Valores estimados. O prazo conta a partir do envio, depois que a peça fica pronta.</small>
+              <small>
+                Valores estimados para um pacote médio ({medidas}); o valor final depende da peça. O prazo
+                conta a partir do envio.
+              </small>
             </div>
           )}
 

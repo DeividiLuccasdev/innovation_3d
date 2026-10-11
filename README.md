@@ -52,7 +52,7 @@ Acesse http://localhost:3000 e o painel em http://localhost:3000/admin.
 
 ## Frete pelos Correios (opcional)
 
-A seção *Calcular frete* confirma a cidade do CEP (ViaCEP) e, se configurada, mostra o valor e o prazo do **PAC** e do **SEDEX** via [Melhor Envio](https://melhorenvio.com.br), que é gratuito e não exige contrato com os Correios.
+A seção *Calcular frete* confirma a cidade do CEP (ViaCEP) e, se configurada, mostra o valor e o prazo do **PAC** e do **SEDEX** para qualquer CEP do Brasil, calculados para um pacote médio (27 × 20 × 15 cm, 1,4 kg, definido em `lib/frete.ts`), via [Melhor Envio](https://melhorenvio.com.br), que é gratuito e não exige contrato com os Correios.
 
 1. Crie a conta no Melhor Envio e gere um token em *Integrações > Permissões de acesso > Tokens* (marque a permissão `shipping-calculate`).
 2. Na Vercel, adicione as variáveis (sem `NEXT_PUBLIC_`, elas ficam só no servidor):

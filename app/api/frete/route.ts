@@ -1,4 +1,4 @@
-import { PACOTES, soDigitos, type OpcaoFrete, type Pacote, type RespostaFrete } from "@/lib/frete";
+import { PACOTE, soDigitos, type OpcaoFrete, type RespostaFrete } from "@/lib/frete";
 
 // Cotação de PAC e SEDEX via Melhor Envio. Sem MELHOR_ENVIO_TOKEN e CEP_ORIGEM,
 // só confirma a cidade do CEP e o site oferece o orçamento pelo WhatsApp.
@@ -31,10 +31,9 @@ async function buscarCidade(cep: string) {
   }
 }
 
-async function cotar(cep: string, pacote: Pacote): Promise<OpcaoFrete[]> {
+async function cotar(cep: string): Promise<OpcaoFrete[]> {
   if (!TOKEN || CEP_ORIGEM.length !== 8) return [];
 
-  const medidas = PACOTES[pacote];
   const resposta = await fetch(`${API}/api/v2/me/shipment/calculate`, {
     method: "POST",
     signal: AbortSignal.timeout(10000),
@@ -48,10 +47,10 @@ async function cotar(cep: string, pacote: Pacote): Promise<OpcaoFrete[]> {
       from: { postal_code: CEP_ORIGEM },
       to: { postal_code: cep },
       package: {
-        height: medidas.altura,
-        width: medidas.largura,
-        length: medidas.comprimento,
-        weight: medidas.peso,
+        height: PACOTE.altura,
+        width: PACOTE.largura,
+        length: PACOTE.comprimento,
+        weight: PACOTE.peso,
       },
       services: "1,2", // Correios PAC e SEDEX
     }),
@@ -76,7 +75,6 @@ async function cotar(cep: string, pacote: Pacote): Promise<OpcaoFrete[]> {
 export async function POST(request: Request) {
   const corpo = await request.json().catch(() => ({}));
   const cep = soDigitos(String(corpo.cep ?? ""));
-  const pacote: Pacote = Object.hasOwn(PACOTES, corpo.pacote) ? corpo.pacote : "medio";
 
   if (cep.length !== 8) {
     return Response.json({ erro: "Digite um CEP com 8 números." }, { status: 400 });
@@ -89,7 +87,7 @@ export async function POST(request: Request) {
 
   let opcoes: OpcaoFrete[] = [];
   try {
-    opcoes = await cotar(cep, pacote);
+    opcoes = await cotar(cep);
   } catch (falha) {
     console.error("Falha ao cotar frete:", falha);
   }
