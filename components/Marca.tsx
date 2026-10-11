@@ -6,7 +6,7 @@ export default function Marca() {
     <Link className="marca" href="/#inicio">
       <img src="/globo.webp" alt="" width={44} height={44} style={{ objectFit: "contain" }} />
       <b>
-        INOVATION <span>3D</span>
+        INNOVATION <span>3D</span>
       </b>
     </Link>
   );

@@ -41,7 +41,7 @@ export default async function Home() {
             className="btn btn-vermelho btn-admin"
             target="_blank"
             rel="noopener noreferrer"
-            href={linkWhatsApp("Olá! Vim pelo site da Inovation 3D.")}
+            href={linkWhatsApp("Olá! Vim pelo site da Innovation 3D.")}
           >
             <IconeWhatsApp />
             WhatsApp
@@ -142,7 +142,7 @@ export default async function Home() {
             className="badge-whatsapp"
             target="_blank"
             rel="noopener noreferrer"
-            href={linkWhatsApp("Olá! Vim pelo site da Inovation 3D.")}
+            href={linkWhatsApp("Olá! Vim pelo site da Innovation 3D.")}
             aria-label={`Falar no WhatsApp: ${telefoneFormatado()}`}
           >
             <IconeWhatsApp tamanho={22} />
@@ -151,7 +151,7 @@ export default async function Home() {
               {telefoneFormatado()}
             </span>
           </a>
-          <span>© {new Date().getFullYear()} Inovation 3D</span>
+          <span>© {new Date().getFullYear()} Innovation 3D</span>
         </div>
       </footer>
     </>

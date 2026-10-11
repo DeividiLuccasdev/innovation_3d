@@ -2,11 +2,11 @@ import type { Metadata } from "next";
 import "./globals.css";
 
 export const metadata: Metadata = {
-  title: "Inovation 3D | Imaginou? A gente imprime.",
+  title: "Innovation 3D | Imaginou? A gente imprime.",
   description:
     "Produtos impressos em 3D: decoração, geek, utilidades e peças personalizadas. Peça pelo WhatsApp.",
   openGraph: {
-    title: "Inovation 3D",
+    title: "Innovation 3D",
     description: "Imaginou? A gente imprime.",
     images: ["/logo-original.png"],
   },
