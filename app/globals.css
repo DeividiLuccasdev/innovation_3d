@@ -158,6 +158,7 @@ footer .wrap{display:flex;flex-wrap:wrap;gap:20px;justify-content:space-between;
 .login h1{font-size:1.6rem;font-weight:800}
 .login label{display:grid;gap:4px;font-weight:600;font-size:.9rem;color:var(--muted)}
 .login input{font:inherit;color:var(--ink);background:var(--bg);border:1.5px solid var(--line);border-radius:10px;padding:11px 12px}
+.login .projeto{font-size:.72rem;color:var(--muted);text-align:center;word-break:break-all}
 .erro{background:var(--red-soft);color:var(--red);border-radius:10px;padding:10px 12px;font-weight:600}
 .aviso{background:#EAF1FF;color:var(--blue-deep);border-radius:12px;padding:14px 16px}
 .fotos-form{display:flex;flex-wrap:wrap;gap:10px;align-items:center}

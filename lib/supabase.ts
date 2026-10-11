@@ -5,6 +5,9 @@ const chave = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY;
 
 export const supabaseConfigurado = Boolean(url && chave);
 
+// Endereço do projeto (público), mostrado no login para conferir a configuração
+export const projetoSupabase = url ? url.replace(/^https?:\/\//, "").replace(/\/+$/, "") : null;
+
 let cliente: SupabaseClient | null = null;
 
 // A chave "anon" é pública por natureza: quem protege os dados são as regras

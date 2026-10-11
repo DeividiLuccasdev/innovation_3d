@@ -5,7 +5,7 @@ import type { Session } from "@supabase/supabase-js";
 import CardProduto from "@/components/CardProduto";
 import Marca from "@/components/Marca";
 import { CATALOGO, CATEGORIAS, ordenarProdutos, type Categoria, type Produto } from "@/lib/produtos";
-import { BUCKET_FOTOS, supabase, supabaseConfigurado } from "@/lib/supabase";
+import { BUCKET_FOTOS, projetoSupabase, supabase, supabaseConfigurado } from "@/lib/supabase";
 
 type Formulario = {
   nome: string;
@@ -120,9 +120,14 @@ function Login() {
     e.preventDefault();
     setErro("");
     setEntrando(true);
-    const { error } = await supabase().auth.signInWithPassword({ email, password: senha });
-    setEntrando(false);
-    if (error) setErro("E-mail ou senha incorretos.");
+    try {
+      const { error } = await supabase().auth.signInWithPassword({ email: email.trim(), password: senha });
+      if (error) setErro(erroDeLogin(error.message));
+    } catch (falha) {
+      setErro(`Não foi possível conectar ao Supabase: ${falha instanceof Error ? falha.message : falha}`);
+    } finally {
+      setEntrando(false);
+    }
   }
 
   return (
@@ -140,8 +145,20 @@ function Login() {
       <button className="btn btn-azul" type="submit" disabled={entrando}>
         {entrando ? "Entrando…" : "Entrar"}
       </button>
+      <small className="mono projeto">Projeto: {projetoSupabase ?? "não configurado"}</small>
     </form>
   );
+}
+
+// Traduz os erros mais comuns do Supabase; os demais aparecem como vieram
+function erroDeLogin(mensagem: string) {
+  if (/invalid login credentials/i.test(mensagem)) return "E-mail ou senha incorretos.";
+  if (/email not confirmed/i.test(mensagem)) return "E-mail ainda não confirmado no Supabase.";
+  if (/invalid api key|no api key/i.test(mensagem))
+    return "Chave do Supabase inválida: confira NEXT_PUBLIC_SUPABASE_ANON_KEY na Vercel.";
+  if (/failed to fetch|network/i.test(mensagem))
+    return "Sem conexão com o Supabase: confira NEXT_PUBLIC_SUPABASE_URL na Vercel.";
+  return `Não foi possível entrar: ${mensagem}`;
 }
 
 function Painel({ email }: { email: string }) {
