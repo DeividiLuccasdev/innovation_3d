@@ -156,3 +156,9 @@ footer .wrap{display:flex;flex-wrap:wrap;gap:20px;justify-content:space-between;
 .galeria-mini{display:flex;gap:6px;position:absolute;bottom:10px;left:10px;z-index:2}
 .galeria-mini button{width:10px;height:10px;border-radius:50%;border:2px solid #fff;background:rgba(255,255,255,.5);padding:0}
 .galeria-mini button[aria-current="true"]{background:#fff}
+
+/* selo do WhatsApp no rodapé */
+.badge-whatsapp{display:inline-flex;align-items:center;gap:10px;background:#25D366;color:#fff;text-decoration:none;border-radius:999px;padding:8px 18px 8px 12px;font-weight:700;font-variant-numeric:tabular-nums;box-shadow:0 10px 22px -12px #128C7E;transition:transform .15s,background .15s}
+.badge-whatsapp:hover{background:#1EBE5A;transform:translateY(-1px)}
+.badge-whatsapp span{display:grid;line-height:1.15}
+.badge-whatsapp small{font-weight:600;font-size:.72rem;opacity:.9;letter-spacing:.02em}

@@ -1,6 +1,6 @@
-# Inovation 3D
+# Innovation 3D
 
-Site da **Inovation 3D**: catálogo de produtos impressos em 3D com pedidos pelo WhatsApp e um painel para o dono cadastrar produtos, enviar fotos e marcar o que está esgotado.
+Site da **Innovation 3D**: catálogo de produtos impressos em 3D com pedidos pelo WhatsApp e um painel para o dono cadastrar produtos, enviar fotos e marcar o que está esgotado.
 
 > **Imaginou? A gente imprime.**
 
