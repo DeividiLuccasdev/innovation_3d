@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import Galeria from "./Galeria";
 import IconeCategoria from "./IconeCategoria";
 import { formatarPreco, ordenarProdutos, type Produto } from "@/lib/produtos";
 import { VITRINE, produtosDoGrupo } from "@/lib/vitrine";
@@ -11,6 +12,7 @@ const MAX_FOTOS = 8;
 
 export default function Vitrine({ produtos }: { produtos: Produto[] }) {
   const [aberto, setAberto] = useState<number | null>(null);
+  const [ampliado, setAmpliado] = useState<Produto | null>(null);
   const grupo = aberto === null ? null : VITRINE[aberto];
   const lista = grupo ? ordenarProdutos(produtosDoGrupo(produtos, grupo)).slice(0, MAX_FOTOS) : [];
 
@@ -38,23 +40,28 @@ export default function Vitrine({ produtos }: { produtos: Produto[] }) {
           {lista.length > 0 ? (
             <div className="vitrine-fotos">
               {lista.map((p) => (
-                <a
-                  key={p.id}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  href={linkWhatsApp(`Olá! Quero algo como: ${p.nome}`)}
-                >
-                  <div className="vitrine-foto">
-                    {p.fotos[0] ? (
-                      // eslint-disable-next-line @next/next/no-img-element
+                <div key={p.id} className="vitrine-item">
+                  {p.fotos[0] ? (
+                    <button
+                      type="button"
+                      className="vitrine-foto"
+                      aria-label={`Ver fotos de ${p.nome}`}
+                      onClick={() => setAmpliado(p)}
+                    >
+                      {/* eslint-disable-next-line @next/next/no-img-element */}
                       <img src={p.fotos[0]} alt={p.nome} loading="lazy" />
-                    ) : (
+                      {p.fotos.length > 1 && <span className="mono">{p.fotos.length} fotos</span>}
+                    </button>
+                  ) : (
+                    <div className="vitrine-foto">
                       <IconeCategoria categoria={p.categoria} />
-                    )}
-                  </div>
-                  <span>{p.nome}</span>
-                  <small>{formatarPreco(p.preco)}</small>
-                </a>
+                    </div>
+                  )}
+                  <a target="_blank" rel="noopener noreferrer" href={linkWhatsApp(`Olá! Quero algo como: ${p.nome}`)}>
+                    <span>{p.nome}</span>
+                    <small>{formatarPreco(p.preco)} · pedir</small>
+                  </a>
+                </div>
               ))}
             </div>
           ) : (
@@ -80,6 +87,8 @@ export default function Vitrine({ produtos }: { produtos: Produto[] }) {
           </span>
         </div>
       )}
+
+      {ampliado && <Galeria fotos={ampliado.fotos} titulo={ampliado.nome} aoFechar={() => setAmpliado(null)} />}
     </>
   );
 }
