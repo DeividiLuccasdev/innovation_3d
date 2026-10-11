@@ -68,8 +68,7 @@ export default async function Home() {
               </div>
               <div className="fatos">
                 <div><b>0,12 mm</b>altura de camada no acabamento fino</div>
-                <div><b>PLA · PETG</b>materiais resistentes</div>
-                <div><b>+15 cores</b>de filamento</div>
+                <div><b>PLA · PETG · TPU</b>materiais rígidos e flexíveis</div>
               </div>
             </div>
             <div className="palco" aria-hidden="true">
