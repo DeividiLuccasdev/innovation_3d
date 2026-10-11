@@ -5,10 +5,11 @@ import Frete from "@/components/Frete";
 import Vitrine from "@/components/Vitrine";
 import IconeInstagram from "@/components/IconeInstagram";
 import IconeWhatsApp from "@/components/IconeWhatsApp";
+import IconeYouTube from "@/components/IconeYouTube";
 import Marca from "@/components/Marca";
 import { PRODUTOS_EXEMPLO, type Produto } from "@/lib/produtos";
 import { supabase, supabaseConfigurado } from "@/lib/supabase";
-import { INSTAGRAM_ARROBA, INSTAGRAM_URL } from "@/lib/instagram";
+import { INSTAGRAM_ARROBA, INSTAGRAM_URL, YOUTUBE_ARROBA, YOUTUBE_URL } from "@/lib/redes";
 import { linkWhatsApp, telefoneFormatado } from "@/lib/whatsapp";
 
 // Atualiza o catálogo no máximo a cada 30 segundos
@@ -53,6 +54,16 @@ export default async function Home() {
             title={INSTAGRAM_ARROBA}
           >
             <IconeInstagram tamanho={20} />
+          </a>
+          <a
+            className="btn-youtube"
+            target="_blank"
+            rel="noopener noreferrer"
+            href={YOUTUBE_URL}
+            aria-label={`YouTube ${YOUTUBE_ARROBA}`}
+            title={YOUTUBE_ARROBA}
+          >
+            <IconeYouTube tamanho={20} />
           </a>
           <a
             className="btn btn-vermelho btn-admin"
@@ -180,6 +191,19 @@ export default async function Home() {
             <span>
               <small>Siga no Instagram</small>
               {INSTAGRAM_ARROBA}
+            </span>
+          </a>
+          <a
+            className="badge-youtube"
+            target="_blank"
+            rel="noopener noreferrer"
+            href={YOUTUBE_URL}
+            aria-label={`Inscrever-se no YouTube: ${YOUTUBE_ARROBA}`}
+          >
+            <IconeYouTube tamanho={22} />
+            <span>
+              <small>Veja no YouTube</small>
+              Innovation 3D Araraquara
             </span>
           </a>
           <span>

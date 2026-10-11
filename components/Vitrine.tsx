@@ -4,7 +4,7 @@ import { useState } from "react";
 import IconeCategoria from "./IconeCategoria";
 import { formatarPreco, ordenarProdutos, type Produto } from "@/lib/produtos";
 import { VITRINE, produtosDoGrupo } from "@/lib/vitrine";
-import { INSTAGRAM_URL } from "@/lib/instagram";
+import { INSTAGRAM_URL, YOUTUBE_URL } from "@/lib/redes";
 import { linkWhatsApp } from "@/lib/whatsapp";
 
 const MAX_FOTOS = 8;
@@ -68,9 +68,16 @@ export default function Vitrine({ produtos }: { produtos: Produto[] }) {
           >
             Pedir orçamento desta linha
           </a>
-          <a className="vitrine-insta" target="_blank" rel="noopener noreferrer" href={INSTAGRAM_URL}>
-            Ver mais trabalhos no Instagram
-          </a>
+          <span className="vitrine-redes">
+            Veja mais trabalhos no{" "}
+            <a target="_blank" rel="noopener noreferrer" href={INSTAGRAM_URL}>
+              Instagram
+            </a>{" "}
+            e no{" "}
+            <a target="_blank" rel="noopener noreferrer" href={YOUTUBE_URL}>
+              YouTube
+            </a>
+          </span>
         </div>
       )}
     </>
