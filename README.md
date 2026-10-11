@@ -8,6 +8,7 @@ Site da **Innovation 3D**: catálogo de produtos impressos em 3D com pedidos pel
 
 - **Página inicial:** slogan, catálogo com filtro por categoria, encomenda personalizada e "como funciona".
 - **Pedido pelo WhatsApp:** cada produto abre o WhatsApp com a mensagem pronta ("Olá! Tenho interesse em: …").
+- **Frete:** consulta por CEP com valor e prazo do PAC e do SEDEX (via Melhor Envio) ou orçamento pelo WhatsApp.
 - **Esgotado:** o produto ganha a faixa "ESGOTADO", a foto fica em cinza e o botão de pedido é desativado.
 - **Painel (`/admin`):** login, cadastro e edição de produtos, até 6 fotos por produto (reduzidas automaticamente antes do envio), marcar esgotado ou destaque, remover.
 
@@ -48,6 +49,18 @@ Acesse http://localhost:3000 e o painel em http://localhost:3000/admin.
 1. Em [vercel.com/new](https://vercel.com/new), importe este repositório.
 2. Em *Environment Variables*, adicione `NEXT_PUBLIC_SUPABASE_URL`, `NEXT_PUBLIC_SUPABASE_ANON_KEY` e `NEXT_PUBLIC_WHATSAPP`.
 3. Clique em *Deploy*.
+
+## Frete pelos Correios (opcional)
+
+A seção *Calcular frete* confirma a cidade do CEP (ViaCEP) e, se configurada, mostra o valor e o prazo do **PAC** e do **SEDEX** para qualquer CEP do Brasil, calculados para um pacote médio (27 × 20 × 15 cm, 1,4 kg, definido em `lib/frete.ts`), via [Melhor Envio](https://melhorenvio.com.br), que é gratuito e não exige contrato com os Correios.
+
+1. Crie a conta no Melhor Envio e gere um token em *Integrações > Permissões de acesso > Tokens* (marque a permissão `shipping-calculate`).
+2. Na Vercel, adicione as variáveis (sem `NEXT_PUBLIC_`, elas ficam só no servidor):
+   - `MELHOR_ENVIO_TOKEN`: o token gerado;
+   - `CEP_ORIGEM` (opcional): o CEP de onde as peças são enviadas, só números. Sem ela, vale `14802269`.
+3. Faça o *Redeploy*.
+
+Sem o token, a consulta confirma a cidade e oferece o orçamento do frete pelo WhatsApp.
 
 ## Segurança
 

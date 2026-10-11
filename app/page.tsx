@@ -1,5 +1,6 @@
 /* eslint-disable @next/next/no-img-element */
 import Catalogo from "@/components/Catalogo";
+import Frete from "@/components/Frete";
 import IconeWhatsApp from "@/components/IconeWhatsApp";
 import Marca from "@/components/Marca";
 import { PRODUTOS_EXEMPLO, type Produto } from "@/lib/produtos";
@@ -35,6 +36,7 @@ export default async function Home() {
           <nav className="links" aria-label="Seções">
             <a href="#produtos">Produtos</a>
             <a href="#encomenda">Sob encomenda</a>
+            <a href="#frete">Frete</a>
             <a href="#como-funciona">Como funciona</a>
           </nav>
           <a
@@ -86,6 +88,12 @@ export default async function Home() {
           </div>
         </section>
 
+        <section className="bloco" id="frete">
+          <div className="wrap">
+            <Frete />
+          </div>
+        </section>
+
         <section className="bloco" id="encomenda">
           <div className="wrap">
             <div className="encomenda">
@@ -128,7 +136,7 @@ export default async function Home() {
               <div className="passo"><h3>Escolha</h3><p>Escolha um produto do catálogo ou conte sua ideia.</p></div>
               <div className="passo"><h3>Peça pelo WhatsApp</h3><p>Combinamos cor, tamanho, prazo e pagamento.</p></div>
               <div className="passo"><h3>Impressão</h3><p>Sua peça é impressa e recebe acabamento.</p></div>
-              <div className="passo"><h3>Entrega</h3><p>Retirada combinada ou envio para todo o Brasil.</p></div>
+              <div className="passo"><h3>Entrega</h3><p>Retirada combinada ou envio pelos Correios para todo o Brasil.</p></div>
             </div>
           </div>
         </section>
