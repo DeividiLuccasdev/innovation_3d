@@ -8,7 +8,7 @@ export const metadata: Metadata = {
   openGraph: {
     title: "Innovation 3D",
     description: "Imaginou? A gente imprime.",
-    images: ["/logo-original.png"],
+    images: ["/og.jpg"],
   },
 };
 
