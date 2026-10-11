@@ -1,9 +1,10 @@
 import { PACOTE, soDigitos, type OpcaoFrete, type RespostaFrete } from "@/lib/frete";
 
-// Cotação de PAC e SEDEX via Melhor Envio. Sem MELHOR_ENVIO_TOKEN e CEP_ORIGEM,
+// Cotação de PAC e SEDEX via Melhor Envio. Sem MELHOR_ENVIO_TOKEN,
 // só confirma a cidade do CEP e o site oferece o orçamento pelo WhatsApp.
 const TOKEN = process.env.MELHOR_ENVIO_TOKEN;
-const CEP_ORIGEM = soDigitos(process.env.CEP_ORIGEM ?? "");
+// CEP de onde as peças saem; a variável CEP_ORIGEM pode trocar
+const CEP_ORIGEM = soDigitos(process.env.CEP_ORIGEM || "14802269");
 const API = process.env.MELHOR_ENVIO_URL ?? "https://melhorenvio.com.br";
 
 type ServicoMelhorEnvio = {

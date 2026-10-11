@@ -57,10 +57,10 @@ A seção *Calcular frete* confirma a cidade do CEP (ViaCEP) e, se configurada, 
 1. Crie a conta no Melhor Envio e gere um token em *Integrações > Permissões de acesso > Tokens* (marque a permissão `shipping-calculate`).
 2. Na Vercel, adicione as variáveis (sem `NEXT_PUBLIC_`, elas ficam só no servidor):
    - `MELHOR_ENVIO_TOKEN`: o token gerado;
-   - `CEP_ORIGEM`: o CEP de onde as peças são enviadas, só números.
+   - `CEP_ORIGEM` (opcional): o CEP de onde as peças são enviadas, só números. Sem ela, vale `14802269`.
 3. Faça o *Redeploy*.
 
-Sem essas variáveis, a consulta confirma a cidade e oferece o orçamento do frete pelo WhatsApp.
+Sem o token, a consulta confirma a cidade e oferece o orçamento do frete pelo WhatsApp.
 
 ## Segurança
 
