@@ -17,6 +17,14 @@ export default function IconeCategoria({ categoria }: { categoria: Categoria | s
           <path d="M30 40V22h40v18M14 64h72" />
         </svg>
       );
+    case "Encomendas personalizadas":
+      return (
+        <svg viewBox="0 0 100 120" fill="none" stroke="#E1262D" strokeWidth="4" strokeLinejoin="round">
+          <rect x="14" y="50" width="72" height="56" rx="6" fill="#FFE1E2" />
+          <rect x="10" y="36" width="80" height="16" rx="4" fill="#DCE8FF" stroke="#1660E8" />
+          <path d="M50 36v70M50 36c-8-16-26-16-22-4 3 6 22 4 22 4zm0 0c8-16 26-16 22-4-3 6-22 4-22 4z" />
+        </svg>
+      );
     case "Arte sacra":
       return (
         <svg viewBox="0 0 100 120" fill="none" stroke="#0B2F7A" strokeWidth="4" strokeLinejoin="round">

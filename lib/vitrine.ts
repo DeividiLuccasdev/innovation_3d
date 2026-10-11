@@ -1,6 +1,7 @@
 import type { Categoria, Produto } from "./produtos";
 
-// Grupos da seção "Tem uma ideia?": cada um junta categorias e tipos do catálogo
+// Grupos da seção "Tem uma ideia?": cada um junta categorias e tipos do catálogo,
+// além dos produtos cadastrados com o próprio título como tipo (categoria Encomendas personalizadas)
 export const VITRINE: { titulo: string; categorias: Categoria[]; tipos: string[] }[] = [
   {
     titulo: "Chaveiros e brindes com nome ou logo",
@@ -45,5 +46,8 @@ export const VITRINE: { titulo: string; categorias: Categoria[]; tipos: string[]
 
 export const produtosDoGrupo = (produtos: Produto[], grupo: (typeof VITRINE)[number]) =>
   produtos.filter(
-    (p) => grupo.categorias.includes(p.categoria) || (p.subcategoria !== null && grupo.tipos.includes(p.subcategoria))
+    (p) =>
+      grupo.categorias.includes(p.categoria) ||
+      p.subcategoria === grupo.titulo ||
+      (p.subcategoria !== null && grupo.tipos.includes(p.subcategoria))
   );
