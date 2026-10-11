@@ -49,8 +49,9 @@ nav.links a:hover{color:var(--blue)}
 .fatos b{display:block;font-family:var(--display);font-size:1.4rem;color:var(--ink)}
 
 /* palco de impressão: o logo "sendo impresso" camada a camada */
-.palco{position:relative;aspect-ratio:1/1;max-width:440px;width:100%;margin-inline:auto;border-radius:28px;background:var(--surface);border:1px solid var(--line);overflow:hidden;box-shadow:0 30px 60px -35px rgba(11,47,122,.45)}
-.palco img{position:absolute;inset:8%;width:84%;height:84%;object-fit:contain}
+.hero .wrap>*{min-width:0}
+.palco{position:relative;aspect-ratio:5/4;max-width:520px;width:100%;margin-inline:auto;border-radius:28px;background:var(--surface);border:1px solid var(--line);overflow:hidden;box-shadow:0 30px 60px -35px rgba(11,47,122,.45)}
+.palco img{position:absolute;inset:4%;width:92%;height:80%;object-fit:contain}
 .palco .camadas{position:absolute;inset:0;background:repeating-linear-gradient(0deg,rgba(22,96,232,.07) 0 2px,transparent 2px 6px);pointer-events:none}
 .palco .bico{position:absolute;left:0;right:0;height:3px;background:linear-gradient(90deg,transparent,var(--red),transparent);top:8%;box-shadow:0 0 14px var(--red);opacity:.9}
 .palco .legenda{position:absolute;left:14px;bottom:12px;background:var(--ink);color:#fff;padding:5px 10px;border-radius:8px}
