@@ -2,6 +2,7 @@
 
 import { useCallback, useEffect, useState, type FormEvent } from "react";
 import type { Session } from "@supabase/supabase-js";
+import AdminPedidos from "@/components/AdminPedidos";
 import CardProduto from "@/components/CardProduto";
 import Marca from "@/components/Marca";
 import { CATALOGO, CATEGORIAS, ordenarProdutos, type Categoria, type Produto } from "@/lib/produtos";
@@ -170,6 +171,7 @@ function Painel({ email }: { email: string }) {
   const [mensagem, setMensagem] = useState("");
   const [erro, setErro] = useState("");
   const [confirmarRemocao, setConfirmarRemocao] = useState<string | null>(null);
+  const [aba, setAba] = useState<"produtos" | "pedidos" | "orcamentos">("pedidos");
 
   const carregar = useCallback(async () => {
     const { data, error } = await supabase().from("produtos").select("*");
@@ -306,7 +308,7 @@ function Painel({ email }: { email: string }) {
   return (
     <>
       <div className="admin-topo">
-        <h1>Produtos</h1>
+        <h1>{aba === "produtos" ? "Produtos" : aba === "pedidos" ? "Pedidos" : "Orçamentos"}</h1>
         <div style={{ display: "flex", gap: 10, alignItems: "center", flexWrap: "wrap" }}>
           <span className="mono" style={{ color: "var(--muted)" }}>{email}</span>
           <a className="btn btn-linha btn-admin" href="/" target="_blank" rel="noopener noreferrer">Ver site</a>
@@ -314,85 +316,105 @@ function Painel({ email }: { email: string }) {
         </div>
       </div>
 
-      {mensagem && <p className="aviso" role="status">{mensagem}</p>}
-      {erro && <p className="erro" role="alert">{erro}</p>}
-
-      <div className="admin" style={{ marginTop: 16 }}>
-        <h3>{editando ? "Editar produto" : "Novo produto"}</h3>
-        <p className="sub">As fotos são reduzidas automaticamente antes do envio. Até {MAX_FOTOS} por produto.</p>
-        <form className="form" onSubmit={salvar}>
-          <label>Nome<input id="p-nome" required placeholder="Ex.: Vaso geométrico" {...campo("nome")} /></label>
-          <label>Preço (R$)<input id="p-preco" required inputMode="decimal" placeholder="49,90" {...campo("preco")} /></label>
-          <label>
-            Categoria
-            <select id="p-categoria" value={form.categoria} onChange={(e) => setForm({ ...form, categoria: e.target.value as Categoria, subcategoria: "" })}>
-              {CATEGORIAS.map((c) => <option key={c}>{c}</option>)}
-            </select>
-          </label>
-          <label>
-            Tipo de produto
-            <select id="p-subcategoria" value={form.subcategoria} onChange={(e) => setForm({ ...form, subcategoria: e.target.value })}>
-              <option value="">Sem tipo definido</option>
-              {CATALOGO[form.categoria].itens.map((t) => <option key={t}>{t}</option>)}
-            </select>
-          </label>
-          <label>Material<input id="p-material" placeholder="PLA" {...campo("material")} /></label>
-          <label>Tamanho<input id="p-tamanho" placeholder="12 × 12 × 18 cm" {...campo("tamanho")} /></label>
-          <label>Tempo de impressão<input id="p-tempo" placeholder="6 h" {...campo("tempo_impressao")} /></label>
-          <label className="largo">Descrição (opcional)<textarea id="p-descricao" rows={2} {...campo("descricao")} /></label>
-
-          <div className="largo fotos-form">
-            {form.fotos.map((url) => (
-              <figure key={url}>
-                {/* eslint-disable-next-line @next/next/no-img-element */}
-                <img src={url} alt="" />
-                <button type="button" aria-label="Tirar esta foto" onClick={() => setForm({ ...form, fotos: form.fotos.filter((f) => f !== url) })}>×</button>
-              </figure>
-            ))}
-            {novasFotos.map((f) => (
-              <figure key={f.previa}>
-                {/* eslint-disable-next-line @next/next/no-img-element */}
-                <img src={f.previa} alt="" />
-                <button type="button" aria-label="Tirar esta foto" onClick={() => { URL.revokeObjectURL(f.previa); setNovasFotos(novasFotos.filter((n) => n !== f)); }}>×</button>
-              </figure>
-            ))}
-            <label htmlFor="p-fotos" className="btn btn-linha">Adicionar fotos</label>
-            <input id="p-fotos" type="file" accept="image/*" multiple hidden onChange={(e) => { escolherFotos(e.target.files); e.target.value = ""; }} />
-          </div>
-
-          <div className="largo" style={{ display: "flex", gap: 10, flexWrap: "wrap" }}>
-            <button className="btn btn-vermelho" type="submit" disabled={salvando}>
-              {salvando ? "Salvando…" : editando ? "Salvar alterações" : "Adicionar produto"}
-            </button>
-            {editando && <button type="button" className="btn btn-linha" onClick={limparFormulario}>Cancelar edição</button>}
-          </div>
-        </form>
-      </div>
-
-      <div className="grade">
-        {ordenarProdutos(produtos).map((p) => (
-          <CardProduto key={p.id} produto={p} compra={false}>
-            <div className="controles-admin">
-              <button className={`mini ${p.esgotado ? "ativo-esg" : ""}`} onClick={() => alternar(p, "esgotado")}>
-                {p.esgotado ? "Esgotado ✓" : "Marcar esgotado"}
-              </button>
-              <button className={`mini ${p.destaque ? "ativo-dest" : ""}`} onClick={() => alternar(p, "destaque")}>
-                {p.destaque ? "Destaque ✓" : "Destacar"}
-              </button>
-              <button className="mini" onClick={() => editar(p)}>Editar</button>
-              {confirmarRemocao === p.id ? (
-                <>
-                  <button className="mini ativo-esg" onClick={() => remover(p)}>Confirmar remoção</button>
-                  <button className="mini" onClick={() => setConfirmarRemocao(null)}>Cancelar</button>
-                </>
-              ) : (
-                <button className="mini perigo" onClick={() => setConfirmarRemocao(p.id)}>Remover</button>
-              )}
-            </div>
-          </CardProduto>
+      <nav className="admin-abas" aria-label="Seções do painel">
+        {(
+          [
+            ["pedidos", "Pedidos"],
+            ["orcamentos", "Orçamentos"],
+            ["produtos", "Produtos"],
+          ] as const
+        ).map(([id, rotulo]) => (
+          <button key={id} type="button" className="btn btn-linha btn-admin" aria-pressed={aba === id} onClick={() => setAba(id)}>
+            {rotulo}
+          </button>
         ))}
-        {produtos.length === 0 && <p>Nenhum produto cadastrado ainda. Use o formulário acima.</p>}
-      </div>
+      </nav>
+
+      {aba !== "produtos" ? (
+        <AdminPedidos key={aba} tabela={aba} />
+      ) : (
+        <>
+          {mensagem && <p className="aviso" role="status">{mensagem}</p>}
+          {erro && <p className="erro" role="alert">{erro}</p>}
+
+          <div className="admin" style={{ marginTop: 16 }}>
+            <h3>{editando ? "Editar produto" : "Novo produto"}</h3>
+            <p className="sub">As fotos são reduzidas automaticamente antes do envio. Até {MAX_FOTOS} por produto.</p>
+            <form className="form" onSubmit={salvar}>
+              <label>Nome<input id="p-nome" required placeholder="Ex.: Vaso geométrico" {...campo("nome")} /></label>
+              <label>Preço (R$)<input id="p-preco" required inputMode="decimal" placeholder="49,90" {...campo("preco")} /></label>
+              <label>
+                Categoria
+                <select id="p-categoria" value={form.categoria} onChange={(e) => setForm({ ...form, categoria: e.target.value as Categoria, subcategoria: "" })}>
+                  {CATEGORIAS.map((c) => <option key={c}>{c}</option>)}
+                </select>
+              </label>
+              <label>
+                Tipo de produto
+                <select id="p-subcategoria" value={form.subcategoria} onChange={(e) => setForm({ ...form, subcategoria: e.target.value })}>
+                  <option value="">Sem tipo definido</option>
+                  {CATALOGO[form.categoria].itens.map((t) => <option key={t}>{t}</option>)}
+                </select>
+              </label>
+              <label>Material<input id="p-material" placeholder="PLA" {...campo("material")} /></label>
+              <label>Tamanho<input id="p-tamanho" placeholder="12 × 12 × 18 cm" {...campo("tamanho")} /></label>
+              <label>Tempo de impressão<input id="p-tempo" placeholder="6 h" {...campo("tempo_impressao")} /></label>
+              <label className="largo">Descrição (opcional)<textarea id="p-descricao" rows={2} {...campo("descricao")} /></label>
+
+              <div className="largo fotos-form">
+                {form.fotos.map((url) => (
+                  <figure key={url}>
+                    {/* eslint-disable-next-line @next/next/no-img-element */}
+                    <img src={url} alt="" />
+                    <button type="button" aria-label="Tirar esta foto" onClick={() => setForm({ ...form, fotos: form.fotos.filter((f) => f !== url) })}>×</button>
+                  </figure>
+                ))}
+                {novasFotos.map((f) => (
+                  <figure key={f.previa}>
+                    {/* eslint-disable-next-line @next/next/no-img-element */}
+                    <img src={f.previa} alt="" />
+                    <button type="button" aria-label="Tirar esta foto" onClick={() => { URL.revokeObjectURL(f.previa); setNovasFotos(novasFotos.filter((n) => n !== f)); }}>×</button>
+                  </figure>
+                ))}
+                <label htmlFor="p-fotos" className="btn btn-linha">Adicionar fotos</label>
+                <input id="p-fotos" type="file" accept="image/*" multiple hidden onChange={(e) => { escolherFotos(e.target.files); e.target.value = ""; }} />
+              </div>
+
+              <div className="largo" style={{ display: "flex", gap: 10, flexWrap: "wrap" }}>
+                <button className="btn btn-vermelho" type="submit" disabled={salvando}>
+                  {salvando ? "Salvando…" : editando ? "Salvar alterações" : "Adicionar produto"}
+                </button>
+                {editando && <button type="button" className="btn btn-linha" onClick={limparFormulario}>Cancelar edição</button>}
+              </div>
+            </form>
+          </div>
+
+          <div className="grade">
+            {ordenarProdutos(produtos).map((p) => (
+              <CardProduto key={p.id} produto={p} compra={false}>
+                <div className="controles-admin">
+                  <button className={`mini ${p.esgotado ? "ativo-esg" : ""}`} onClick={() => alternar(p, "esgotado")}>
+                    {p.esgotado ? "Esgotado ✓" : "Marcar esgotado"}
+                  </button>
+                  <button className={`mini ${p.destaque ? "ativo-dest" : ""}`} onClick={() => alternar(p, "destaque")}>
+                    {p.destaque ? "Destaque ✓" : "Destacar"}
+                  </button>
+                  <button className="mini" onClick={() => editar(p)}>Editar</button>
+                  {confirmarRemocao === p.id ? (
+                    <>
+                      <button className="mini ativo-esg" onClick={() => remover(p)}>Confirmar remoção</button>
+                      <button className="mini" onClick={() => setConfirmarRemocao(null)}>Cancelar</button>
+                    </>
+                  ) : (
+                    <button className="mini perigo" onClick={() => setConfirmarRemocao(p.id)}>Remover</button>
+                  )}
+                </div>
+              </CardProduto>
+            ))}
+            {produtos.length === 0 && <p>Nenhum produto cadastrado ainda. Use o formulário acima.</p>}
+          </div>
+        </>
+      )}
     </>
   );
 }

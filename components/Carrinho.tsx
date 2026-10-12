@@ -5,7 +5,6 @@ import {
   CHAVE_ARMAZENAMENTO,
   MAX_QUANTIDADE,
   lerCarrinho,
-  mensagemPedido,
   subtotal,
   totalItens,
   valorEntrega,
@@ -13,8 +12,8 @@ import {
   type ItemCarrinho,
 } from "@/lib/carrinho";
 import { formatarCep, soDigitos, type OpcaoFrete, type RespostaFrete } from "@/lib/frete";
+import { formatarTelefone } from "@/lib/contato";
 import { formatarPreco, type Produto } from "@/lib/produtos";
-import { linkWhatsApp } from "@/lib/whatsapp";
 
 type ContextoCarrinho = {
   itens: ItemCarrinho[];
@@ -126,16 +125,21 @@ export function BotaoAdicionar({ produto }: { produto: Produto }) {
   );
 }
 
+const ENDERECO_VAZIO = { logradouro: "", numero: "", complemento: "", bairro: "", cidade: "", uf: "" };
+
 export function GavetaCarrinho() {
   const { itens, aberto, fechar, alterar, remover, limpar } = useCarrinho();
   const [cep, setCep] = useState("");
   const [consultando, setConsultando] = useState(false);
   const [opcoes, setOpcoes] = useState<OpcaoFrete[] | null>(null);
-  const [cidade, setCidade] = useState("");
   const [erroFrete, setErroFrete] = useState("");
   const [entrega, setEntrega] = useState<Entrega | null>(null);
-  const [nome, setNome] = useState("");
+  const [endereco, setEndereco] = useState(ENDERECO_VAZIO);
+  const [contato, setContato] = useState({ nome: "", email: "", telefone: "" });
   const [observacoes, setObservacoes] = useState("");
+  const [enviando, setEnviando] = useState(false);
+  const [erro, setErro] = useState("");
+  const [confirmado, setConfirmado] = useState<{ codigo: string; email: string } | null>(null);
 
   useEffect(() => {
     if (!aberto) return;
@@ -168,31 +172,96 @@ export function GavetaCarrinho() {
         setErroFrete(dados.erro ?? "Não foi possível calcular agora.");
         return;
       }
-      setCidade(dados.cidade ? `${dados.cidade}/${dados.uf}` : "");
+      setEndereco((atual) => ({
+        ...atual,
+        logradouro: dados.logradouro ?? atual.logradouro,
+        bairro: dados.bairro ?? atual.bairro,
+        cidade: dados.cidade ?? atual.cidade,
+        uf: dados.uf ?? atual.uf,
+      }));
       setOpcoes(dados.opcoes);
       setEntrega(dados.opcoes.length ? null : { tipo: "a-calcular", cep });
     } catch {
-      setErroFrete("Não foi possível calcular agora. Você pode finalizar e combinamos o frete.");
+      setErroFrete("Não foi possível calcular agora. Você pode finalizar e confirmamos o frete com o pedido.");
       if (soDigitos(cep).length === 8) setEntrega({ tipo: "a-calcular", cep });
     } finally {
       setConsultando(false);
     }
   }
 
+  async function confirmar(e: FormEvent) {
+    e.preventDefault();
+    if (!entrega) {
+      setErro("Escolha a forma de entrega.");
+      return;
+    }
+    setErro("");
+    setEnviando(true);
+    try {
+      const resposta = await fetch("/api/pedidos", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          ...contato,
+          observacoes,
+          itens: itens.map((i) => ({ id: i.id, quantidade: i.quantidade })),
+          entrega: entrega.tipo === "retirada" ? entrega : { ...entrega, ...endereco },
+        }),
+      });
+      const r = await resposta.json();
+      if (!resposta.ok) {
+        setErro(r.erro ?? "Não foi possível registrar o pedido agora.");
+        return;
+      }
+      setConfirmado({ codigo: r.codigo, email: contato.email });
+      limpar();
+      setEntrega(null);
+      setOpcoes(null);
+      setObservacoes("");
+    } catch {
+      setErro("Não foi possível registrar o pedido agora. Verifique sua conexão e tente de novo.");
+    } finally {
+      setEnviando(false);
+    }
+  }
+
   const total = subtotal(itens) + valorEntrega(entrega);
-  const podeFinalizar = itens.length > 0 && entrega !== null;
+  const precisaEndereco = entrega !== null && entrega.tipo !== "retirada";
+  const campoEndereco = (nome: keyof typeof ENDERECO_VAZIO) => ({
+    value: endereco[nome],
+    onChange: (e: { target: { value: string } }) => setEndereco({ ...endereco, [nome]: e.target.value }),
+  });
 
   return (
     <div className="gaveta-fundo" onClick={(e) => e.target === e.currentTarget && fechar()}>
       <aside className="gaveta" role="dialog" aria-modal="true" aria-label="Carrinho">
         <header className="gaveta-topo">
-          <h2>Seu carrinho</h2>
+          <h2>{confirmado ? "Pedido recebido!" : "Seu carrinho"}</h2>
           <button type="button" className="chat-fechar" aria-label="Fechar carrinho" onClick={fechar}>
             ×
           </button>
         </header>
 
-        {itens.length === 0 ? (
+        {confirmado ? (
+          <div className="gaveta-vazia gaveta-confirmado">
+            <span className="mono">Pedido nº {confirmado.codigo}</span>
+            <p>
+              Obrigado! Vamos conferir a disponibilidade e o prazo, e enviaremos a confirmação com o pagamento
+              (Pix ou cartão) para <b>{confirmado.email}</b>.
+            </p>
+            <p className="gaveta-nota">Guarde o número do pedido para acompanhar.</p>
+            <button
+              type="button"
+              className="btn btn-azul"
+              onClick={() => {
+                setConfirmado(null);
+                fechar();
+              }}
+            >
+              Continuar comprando
+            </button>
+          </div>
+        ) : itens.length === 0 ? (
           <div className="gaveta-vazia">
             <IconeCarrinho tamanho={40} />
             <p>Seu carrinho está vazio.</p>
@@ -201,7 +270,7 @@ export function GavetaCarrinho() {
             </a>
           </div>
         ) : (
-          <div className="gaveta-corpo">
+          <form className="gaveta-corpo" id="form-pedido" onSubmit={confirmar}>
             <ul className="gaveta-itens">
               {itens.map((i) => (
                 <li key={i.id}>
@@ -235,13 +304,13 @@ export function GavetaCarrinho() {
               <label className="opcao-entrega">
                 <input type="radio" name="entrega" checked={entrega?.tipo === "retirada"} onChange={() => setEntrega({ tipo: "retirada" })} />
                 <span>
-                  <b>Retirada combinada</b>
-                  <small>Combinamos local e horário pelo WhatsApp</small>
+                  <b>Retirada em Araraquara/SP</b>
+                  <small>Combinamos local e horário após a confirmação</small>
                 </span>
                 <em>Grátis</em>
               </label>
 
-              <form className="gaveta-cep" onSubmit={calcularFrete}>
+              <div className="gaveta-cep">
                 <input
                   inputMode="numeric"
                   autoComplete="postal-code"
@@ -249,13 +318,13 @@ export function GavetaCarrinho() {
                   aria-label="CEP para envio"
                   value={cep}
                   onChange={(e) => setCep(formatarCep(e.target.value))}
+                  onKeyDown={(e) => e.key === "Enter" && calcularFrete(e)}
                 />
-                <button type="submit" className="btn btn-linha" disabled={consultando || soDigitos(cep).length !== 8}>
+                <button type="button" className="btn btn-linha" disabled={consultando || soDigitos(cep).length !== 8} onClick={calcularFrete}>
                   {consultando ? "…" : "Calcular"}
                 </button>
-              </form>
+              </div>
               {erroFrete && <p className="erro">{erroFrete}</p>}
-              {cidade && <small className="mono gaveta-cidade">Entrega para {cidade}</small>}
               {opcoes?.map((o) => (
                 <label key={o.servico} className="opcao-entrega">
                   <input
@@ -274,11 +343,32 @@ export function GavetaCarrinho() {
               {entrega?.tipo === "a-calcular" && (
                 <p className="gaveta-nota">Envio pelos Correios para o CEP {entrega.cep}. O valor do frete vai junto com a confirmação do pedido.</p>
               )}
+
+              {precisaEndereco && (
+                <div className="gaveta-endereco">
+                  <input className="gaveta-campo largo" required placeholder="Rua / avenida" aria-label="Rua" autoComplete="address-line1" maxLength={120} {...campoEndereco("logradouro")} />
+                  <input className="gaveta-campo" required placeholder="Número" aria-label="Número" maxLength={20} {...campoEndereco("numero")} />
+                  <input className="gaveta-campo" placeholder="Complemento" aria-label="Complemento" autoComplete="address-line2" maxLength={60} {...campoEndereco("complemento")} />
+                  <input className="gaveta-campo" placeholder="Bairro" aria-label="Bairro" maxLength={80} {...campoEndereco("bairro")} />
+                  <input className="gaveta-campo" required placeholder="Cidade" aria-label="Cidade" autoComplete="address-level2" maxLength={80} {...campoEndereco("cidade")} />
+                </div>
+              )}
             </section>
 
             <section className="gaveta-bloco">
               <h3>Seus dados</h3>
-              <input className="gaveta-campo" placeholder="Seu nome" aria-label="Seu nome" value={nome} onChange={(e) => setNome(e.target.value)} maxLength={80} />
+              <input className="gaveta-campo" required placeholder="Nome completo" aria-label="Nome completo" autoComplete="name" maxLength={80} value={contato.nome} onChange={(e) => setContato({ ...contato, nome: e.target.value })} />
+              <input className="gaveta-campo" required type="email" placeholder="E-mail" aria-label="E-mail" autoComplete="email" maxLength={120} value={contato.email} onChange={(e) => setContato({ ...contato, email: e.target.value })} />
+              <input
+                className="gaveta-campo"
+                required
+                inputMode="tel"
+                placeholder="Telefone com DDD"
+                aria-label="Telefone com DDD"
+                autoComplete="tel"
+                value={contato.telefone}
+                onChange={(e) => setContato({ ...contato, telefone: formatarTelefone(e.target.value) })}
+              />
               <textarea
                 className="gaveta-campo"
                 placeholder="Observações: cor, tamanho, nome para personalizar…"
@@ -289,10 +379,10 @@ export function GavetaCarrinho() {
                 maxLength={500}
               />
             </section>
-          </div>
+          </form>
         )}
 
-        {itens.length > 0 && (
+        {!confirmado && itens.length > 0 && (
           <footer className="gaveta-rodape">
             <div className="gaveta-total">
               <span>Subtotal</span>
@@ -308,20 +398,14 @@ export function GavetaCarrinho() {
               <span>Total</span>
               <span>{formatarPreco(total)}</span>
             </div>
-            <a
-              className={`btn btn-whats-pedido ${podeFinalizar ? "" : "desativado"}`}
-              aria-disabled={!podeFinalizar}
-              target="_blank"
-              rel="noopener noreferrer"
-              href={podeFinalizar ? linkWhatsApp(mensagemPedido(itens, entrega, nome, observacoes)) : undefined}
-              onClick={(e) => !podeFinalizar && e.preventDefault()}
-            >
-              Finalizar pedido pelo WhatsApp
-            </a>
+            {erro && <p className="erro">{erro}</p>}
+            <button type="submit" form="form-pedido" className="btn btn-brilho btn-confirmar" disabled={enviando || entrega === null}>
+              {enviando ? "Enviando pedido…" : "Confirmar pedido"}
+            </button>
             <small className="gaveta-nota">
-              {podeFinalizar
-                ? "Confirmamos disponibilidade, prazo e pagamento pelo WhatsApp."
-                : "Escolha a entrega para finalizar."}
+              {entrega === null
+                ? "Escolha a entrega para continuar."
+                : "Você recebe a confirmação e o pagamento (Pix ou cartão) por e-mail. Usamos seus dados só para este pedido."}
             </small>
             <button type="button" className="gaveta-limpar" onClick={limpar}>
               Esvaziar carrinho

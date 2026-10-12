@@ -6,7 +6,7 @@ import IconeCategoria from "./IconeCategoria";
 import { formatarPreco, ordenarProdutos, type Produto } from "@/lib/produtos";
 import { VITRINE, produtosDoGrupo } from "@/lib/vitrine";
 import { INSTAGRAM_URL, YOUTUBE_URL } from "@/lib/redes";
-import { linkWhatsApp } from "@/lib/whatsapp";
+import { abrirOrcamento } from "./Orcamento";
 
 const MAX_FOTOS = 8;
 
@@ -57,24 +57,19 @@ export default function Vitrine({ produtos }: { produtos: Produto[] }) {
                       <IconeCategoria categoria={p.categoria} />
                     </div>
                   )}
-                  <a target="_blank" rel="noopener noreferrer" href={linkWhatsApp(`Olá! Quero algo como: ${p.nome}`)}>
+                  <button type="button" onClick={() => abrirOrcamento(`Algo como: ${p.nome}`)}>
                     <span>{p.nome}</span>
                     <small>{formatarPreco(p.preco)} · pedir</small>
-                  </a>
+                  </button>
                 </div>
               ))}
             </div>
           ) : (
             <p>As fotos desta linha chegam em breve. Conte o que você precisa que a gente mostra exemplos.</p>
           )}
-          <a
-            className="btn btn-vermelho"
-            target="_blank"
-            rel="noopener noreferrer"
-            href={linkWhatsApp(`Olá! Quero um orçamento de: ${grupo.titulo.toLowerCase()}`)}
-          >
+          <button type="button" className="btn btn-vermelho" onClick={() => abrirOrcamento(grupo.titulo)}>
             Pedir orçamento desta linha
-          </a>
+          </button>
           <span className="vitrine-redes">
             Veja mais trabalhos no{" "}
             <a target="_blank" rel="noopener noreferrer" href={INSTAGRAM_URL}>

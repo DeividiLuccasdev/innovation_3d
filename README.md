@@ -1,18 +1,18 @@
 # Innovation 3D
 
-Site da **Innovation 3D**: catálogo de produtos impressos em 3D com pedidos pelo WhatsApp e um painel para o dono cadastrar produtos, enviar fotos e marcar o que está esgotado.
+Site da **Innovation 3D**: catálogo de produtos impressos em 3D com carrinho e pedido pelo próprio site, formulário de orçamento e um painel para o dono cadastrar produtos e acompanhar pedidos. O site não expõe WhatsApp: o contato com o cliente parte da loja.
 
 > **Imaginou? A gente imprime.**
 
 ## O que o site faz
 
 - **Página inicial:** slogan, catálogo com filtro por categoria, encomenda personalizada e "como funciona".
-- **Carrinho:** o cliente adiciona produtos, escolhe retirada ou frete dos Correios e finaliza pelo WhatsApp com o pedido completo (itens, quantidades, entrega e total). O carrinho fica salvo no navegador.
-- **Assistente Inno:** chat com respostas rápidas (pedido, prazo, materiais, frete, pagamento, personalização), busca no catálogo e encaminha para o WhatsApp. Textos em `lib/chatbot.ts`.
-- **Pedido pelo WhatsApp:** cada produto abre o WhatsApp com a mensagem pronta ("Olá! Tenho interesse em: …").
-- **Frete:** consulta por CEP com valor e prazo do PAC e do SEDEX (via Melhor Envio) ou orçamento pelo WhatsApp.
+- **Carrinho:** o cliente adiciona produtos, escolhe retirada ou frete dos Correios informa endereço e contato e confirma o pedido, que é gravado no Supabase com número (ex.: `A1B2C3`). Os preços são conferidos no banco, então não dá para alterar o valor pelo navegador. O carrinho fica salvo no navegador.
+- **Assistente Inno:** chat com respostas rápidas (pedido, prazo, materiais, frete, pagamento, personalização), busca no catálogo e, quando não sabe, abre o formulário de orçamento com a pergunta. Textos em `lib/chatbot.ts`.
+- **Orçamento:** "Quero personalizar", "Pedir orçamento" e itens sob encomenda abrem um formulário (nome, e-mail, telefone, descrição e link de referência) que fica salvo para o painel.
+- **Frete:** consulta por CEP com valor e prazo do PAC e do SEDEX (via Melhor Envio); sem cotação, o frete é confirmado junto com o pedido.
 - **Esgotado:** o produto ganha a faixa "ESGOTADO", a foto fica em cinza e o botão de pedido é desativado.
-- **Painel (`/admin`):** login, cadastro e edição de produtos, até 6 fotos por produto (reduzidas automaticamente antes do envio), marcar esgotado ou destaque, remover.
+- **Painel (`/admin`):** login, abas de **Pedidos** e **Orçamentos** (com status: novo, aguardando pagamento, pago, em produção, enviado…), cadastro e edição de produtos, até 6 fotos por produto (reduzidas automaticamente antes do envio), marcar esgotado ou destaque, remover.
 
 Enquanto o Supabase não está configurado, a página mostra produtos de exemplo.
 
@@ -33,7 +33,7 @@ Enquanto o Supabase não está configurado, a página mostra produtos de exemplo
    insert into public.administradores (user_id)
    select id from auth.users where email = 'seu-email@exemplo.com';
    ```
-   Já tinha rodado uma versão antiga do `schema.sql` (com 4 categorias)? Rode também [`supabase/migracoes/001_categorias.sql`](supabase/migracoes/001_categorias.sql): ele cria o campo *tipo de produto* e move os produtos antigos para as novas categorias. Depois rode [`supabase/migracoes/002_arte_sacra.sql`](supabase/migracoes/002_arte_sacra.sql), que libera a categoria *Arte sacra*, e [`supabase/migracoes/003_encomendas.sql`](supabase/migracoes/003_encomendas.sql), que libera *Encomendas personalizadas*, e [`supabase/migracoes/004_ets.sql`](supabase/migracoes/004_ets.sql), que libera *ETs e alienígenas*.
+   Já tinha rodado uma versão antiga do `schema.sql` (com 4 categorias)? Rode também [`supabase/migracoes/001_categorias.sql`](supabase/migracoes/001_categorias.sql): ele cria o campo *tipo de produto* e move os produtos antigos para as novas categorias. Depois rode [`supabase/migracoes/002_arte_sacra.sql`](supabase/migracoes/002_arte_sacra.sql), que libera a categoria *Arte sacra*, e [`supabase/migracoes/003_encomendas.sql`](supabase/migracoes/003_encomendas.sql), que libera *Encomendas personalizadas*, e [`supabase/migracoes/004_ets.sql`](supabase/migracoes/004_ets.sql), que libera *ETs e alienígenas*, e [`supabase/migracoes/005_pedidos_orcamentos.sql`](supabase/migracoes/005_pedidos_orcamentos.sql), que cria os pedidos e os orçamentos feitos pelo site.
 5. **Pegue as chaves:** em *Project Settings > API*, copie a *Project URL* e a chave *anon public*.
 
 ## Rodando localmente
@@ -49,7 +49,7 @@ Acesse http://localhost:3000 e o painel em http://localhost:3000/admin.
 ## Publicando na Vercel
 
 1. Em [vercel.com/new](https://vercel.com/new), importe este repositório.
-2. Em *Environment Variables*, adicione `NEXT_PUBLIC_SUPABASE_URL`, `NEXT_PUBLIC_SUPABASE_ANON_KEY` e `NEXT_PUBLIC_WHATSAPP`.
+2. Em *Environment Variables*, adicione `NEXT_PUBLIC_SUPABASE_URL` e `NEXT_PUBLIC_SUPABASE_ANON_KEY`.
 3. Clique em *Deploy*.
 
 ## Frete pelos Correios (opcional)
@@ -62,11 +62,11 @@ A seção *Calcular frete* confirma a cidade do CEP (ViaCEP) e, se configurada, 
    - `CEP_ORIGEM` (opcional): o CEP de onde as peças são enviadas, só números. Sem ela, vale `14802269`.
 3. Faça o *Redeploy*.
 
-Sem o token, a consulta confirma a cidade e oferece o orçamento do frete pelo WhatsApp.
+Sem o token, a consulta confirma a cidade e o frete é confirmado junto com o pedido.
 
 ## Segurança
 
-A chave *anon* do Supabase fica no navegador por natureza. Quem protege os dados são as regras de acesso (RLS) em `supabase/schema.sql`: qualquer pessoa só **lê** o catálogo e as fotos; criar, alterar, remover e enviar fotos exige estar logado **e** estar na tabela `administradores`.
+A chave *anon* do Supabase fica no navegador por natureza. Quem protege os dados são as regras de acesso (RLS) em `supabase/schema.sql`: qualquer pessoa só **lê** o catálogo e as fotos e **envia** pedidos de orçamento (sem poder lê-los); pedidos passam pela função `criar_pedido`, que recalcula os preços no banco; criar, alterar, remover e enviar fotos exige estar logado **e** estar na tabela `administradores`.
 
 ## Estrutura
 
@@ -76,7 +76,7 @@ app/
 ├── admin/page.tsx      # painel do administrador
 └── globals.css
 components/             # cards, catálogo, marca
-lib/                    # Supabase, produtos, WhatsApp
+lib/                    # Supabase, produtos, frete, carrinho, chat
 supabase/schema.sql     # tabelas e regras de acesso
 supabase/migracoes/     # alterações para bancos já criados
 public/                 # logo

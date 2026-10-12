@@ -1,5 +1,3 @@
-import { formatarPreco } from "./produtos";
-
 export type ItemCarrinho = {
   id: string;
   nome: string;
@@ -39,27 +37,4 @@ export function lerCarrinho(bruto: string | null): ItemCarrinho[] {
   } catch {
     return [];
   }
-}
-
-// Texto do pedido enviado pelo WhatsApp
-export function mensagemPedido(itens: ItemCarrinho[], entrega: Entrega | null, nome: string, observacoes: string) {
-  const linhas = ["Olá! Quero finalizar este pedido feito pelo site:", ""];
-  for (const i of itens) {
-    linhas.push(`• ${i.quantidade}x ${i.nome}: ${formatarPreco(i.preco * i.quantidade)}`);
-  }
-  linhas.push("", `Subtotal: ${formatarPreco(subtotal(itens))}`);
-
-  if (entrega?.tipo === "correios") {
-    linhas.push(`Entrega: ${entrega.servico} para o CEP ${entrega.cep} (até ${entrega.prazo} dias úteis): ${formatarPreco(entrega.preco)}`);
-  } else if (entrega?.tipo === "a-calcular") {
-    linhas.push(`Entrega: Correios para o CEP ${entrega.cep} (frete a calcular)`);
-  } else if (entrega?.tipo === "retirada") {
-    linhas.push("Entrega: retirada combinada");
-  }
-
-  const total = subtotal(itens) + valorEntrega(entrega);
-  linhas.push(`Total: ${formatarPreco(total)}${entrega?.tipo === "a-calcular" ? " + frete" : ""}`);
-  if (nome.trim()) linhas.push("", `Nome: ${nome.trim()}`);
-  if (observacoes.trim()) linhas.push(`Observações: ${observacoes.trim()}`);
-  return linhas.join("\n");
 }

@@ -3,7 +3,8 @@
 import { useEffect, useRef, useState, type FormEvent } from "react";
 import { ASSUNTOS, SAUDACAO, responder, type Acao, type Resposta } from "@/lib/chatbot";
 import type { Produto } from "@/lib/produtos";
-import { linkWhatsApp } from "@/lib/whatsapp";
+import { useCarrinho } from "./Carrinho";
+import { abrirOrcamento } from "./Orcamento";
 
 type Mensagem = { de: "bot" | "cliente"; texto: string; acoes?: Acao[] };
 
@@ -16,6 +17,7 @@ export default function ChatBot({ produtos }: { produtos: Produto[] }) {
   const [texto, setTexto] = useState("");
   const fim = useRef<HTMLDivElement>(null);
   const campo = useRef<HTMLInputElement>(null);
+  const carrinho = useCarrinho();
 
   useEffect(() => {
     fim.current?.scrollIntoView({ block: "end" });
@@ -42,11 +44,15 @@ export default function ChatBot({ produtos }: { produtos: Produto[] }) {
   }
 
   function agir(acao: Acao) {
-    if (acao.tipo === "whatsapp") {
-      window.open(linkWhatsApp(acao.mensagem), "_blank", "noopener,noreferrer");
+    setAberto(false);
+    if (acao.tipo === "orcamento") {
+      abrirOrcamento(acao.assunto);
       return;
     }
-    setAberto(false);
+    if (acao.tipo === "carrinho") {
+      carrinho.abrir();
+      return;
+    }
     if (acao.tipo === "catalogo") {
       window.dispatchEvent(new CustomEvent(EVENTO_FILTRO, { detail: { categoria: acao.categoria, subtipo: acao.subtipo } }));
       return;
@@ -94,10 +100,19 @@ export default function ChatBot({ produtos }: { produtos: Produto[] }) {
             {mensagens.map((m, i) => (
               <div key={i} className={`chat-msg ${m.de}`}>
                 <p>{m.texto}</p>
+                {i === 0 && (
+                  <div className="chat-faq" role="list" aria-label="Perguntas frequentes">
+                    {ASSUNTOS.map((f) => (
+                      <button key={f.id} type="button" role="listitem" onClick={() => perguntar(f.pergunta, f.resposta)}>
+                        {f.pergunta}
+                      </button>
+                    ))}
+                  </div>
+                )}
                 {m.acoes && m.acoes.length > 0 && (
                   <div className="chat-acoes">
                     {m.acoes.map((a) => (
-                      <button key={a.rotulo} type="button" className={a.tipo === "whatsapp" ? "whats" : ""} onClick={() => agir(a)}>
+                      <button key={a.rotulo} type="button" className={a.tipo === "orcamento" ? "destaque" : ""} onClick={() => agir(a)}>
                         {a.rotulo}
                       </button>
                     ))}
@@ -110,7 +125,7 @@ export default function ChatBot({ produtos }: { produtos: Produto[] }) {
 
           <div className="chat-assuntos" role="group" aria-label="Assuntos">
             {ASSUNTOS.map((a) => (
-              <button key={a.id} type="button" onClick={() => perguntar(a.rotulo, a.resposta)}>
+              <button key={a.id} type="button" onClick={() => perguntar(a.pergunta, a.resposta)}>
                 {a.rotulo}
               </button>
             ))}

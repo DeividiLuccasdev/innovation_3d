@@ -4,7 +4,7 @@ import { useEffect, useState } from "react";
 import CardProduto from "./CardProduto";
 import { EVENTO_FILTRO } from "./ChatBot";
 import { CATALOGO, CATEGORIAS, ordenarProdutos, type Categoria, type Produto } from "@/lib/produtos";
-import { linkWhatsApp } from "@/lib/whatsapp";
+import { BotaoOrcamento } from "./Orcamento";
 
 export default function Catalogo({
   produtos,
@@ -49,7 +49,7 @@ export default function Catalogo({
       <div className="cab">
         <div>
           <h2>Nossos produtos</h2>
-          <p>Escolha o seu e peça pelo WhatsApp. Qualquer item pode ser personalizado ou feito sob encomenda.</p>
+          <p>Adicione ao carrinho e finalize pelo site. Qualquer item pode ser personalizado ou feito sob encomenda.</p>
         </div>
         <div className="filtros" role="group" aria-label="Filtrar por categoria">
           {(["Todos", ...CATEGORIAS] as const).map((c) => (
@@ -95,14 +95,7 @@ export default function Catalogo({
             <span className="mono">sob encomenda</span>
             <h3>{pedido}</h3>
             <p>Ainda não temos fotos deste item no catálogo, mas a gente imprime. Conte o que você imaginou.</p>
-            <a
-              className="btn btn-azul"
-              target="_blank"
-              rel="noopener noreferrer"
-              href={linkWhatsApp(`Olá! Quero um orçamento de: ${pedido}`)}
-            >
-              Solicitar orçamento
-            </a>
+            <BotaoOrcamento assunto={`Orçamento: ${pedido}`} />
           </div>
         )}
       </div>

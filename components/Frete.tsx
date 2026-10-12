@@ -3,7 +3,6 @@
 import { useState, type FormEvent } from "react";
 import { formatarPreco } from "@/lib/produtos";
 import { PACOTE, formatarCep, type RespostaFrete } from "@/lib/frete";
-import { linkWhatsApp } from "@/lib/whatsapp";
 
 export default function Frete() {
   const [cep, setCep] = useState("");
@@ -26,14 +25,13 @@ export default function Frete() {
       if (!resposta.ok) setErro(dados.erro ?? "Não foi possível consultar agora.");
       else setResultado(dados);
     } catch {
-      setErro("Não foi possível consultar agora. Tente de novo ou fale no WhatsApp.");
+      setErro("Não foi possível consultar agora. Tente de novo em instantes.");
     } finally {
       setConsultando(false);
     }
   }
 
   const destino = resultado?.cidade ? `${resultado.cidade}/${resultado.uf}` : `CEP ${cep}`;
-  const mensagem = `Olá! Quero saber o frete para o CEP ${cep}.`;
   const medidas = `${PACOTE.comprimento} × ${PACOTE.largura} × ${PACOTE.altura} cm e ${String(PACOTE.peso).replace(".", ",")} kg`;
 
   return (
@@ -93,10 +91,10 @@ export default function Frete() {
           {resultado && resultado.opcoes.length === 0 && (
             <div className="frete-resultado">
               <span className="mono">Entregamos em {destino}</span>
-              <p>Mande seu CEP no WhatsApp e respondemos com o valor exato do PAC e do SEDEX.</p>
-              <a className="btn btn-vermelho" target="_blank" rel="noopener noreferrer" href={linkWhatsApp(mensagem)}>
-                Consultar frete pelo WhatsApp
-              </a>
+              <p>
+                Adicione os produtos ao carrinho e finalize o pedido com este CEP: confirmamos o valor exato do PAC
+                e do SEDEX por e-mail antes do pagamento.
+              </p>
             </div>
           )}
         </div>
