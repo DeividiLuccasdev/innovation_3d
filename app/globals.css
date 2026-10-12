@@ -41,29 +41,53 @@ nav.links .link-admin{border:1.5px solid var(--line);border-radius:999px;padding
 footer .link-admin{color:var(--blue);font-weight:600}
 .btn-admin[aria-pressed="true"]{background:var(--ink);color:#fff;border-color:var(--ink)}
 
-/* hero */
-.hero{padding-block:56px 40px}
-.hero .wrap{display:grid;grid-template-columns:1.1fr .9fr;gap:40px;align-items:center}
-.selo{display:inline-flex;gap:8px;align-items:center;background:var(--red-soft);color:var(--red);font-weight:700;padding:6px 12px;border-radius:999px;font-size:.85rem}
-.hero h1{font-size:clamp(2.6rem,6vw,4.6rem);font-weight:900;margin-top:18px;letter-spacing:-.01em}
-.hero h1 em{font-style:italic;color:var(--blue)}
-.hero h1 strong{color:var(--red)}
-.hero p.lead{color:var(--muted);font-size:1.15rem;max-width:34rem;margin:18px 0 26px}
+/* hero: oficina escura com a impressora "imprimindo" o globo da marca */
+.hero{position:relative;isolation:isolate;overflow:hidden;min-height:calc(100svh - 68px);display:flex;align-items:center;padding-block:72px 96px;color:#fff;
+  background:radial-gradient(700px 520px at 72% 55%,rgba(22,96,232,.32),transparent 65%),radial-gradient(520px 420px at 90% 95%,rgba(225,38,45,.18),transparent 60%),
+  linear-gradient(rgba(255,255,255,.035) 1px,transparent 1px) 0 0/100% 34px,linear-gradient(90deg,rgba(255,255,255,.035) 1px,transparent 1px) 0 0/34px 100%,#050A1C}
+.hero::after{content:"";position:absolute;inset:0;z-index:-1;background:linear-gradient(90deg,rgba(5,10,28,.92) 0%,rgba(5,10,28,.7) 40%,rgba(5,10,28,0) 70%)}
+.hero-conteudo{position:relative;z-index:1;width:100%}
+.hero-conteudo>*{max-width:40rem}
+.hero-selo{display:inline-flex;gap:8px;align-items:center;border:1px solid rgba(141,180,255,.35);background:rgba(255,255,255,.05);color:#BFD3FF;padding:7px 14px;border-radius:999px;text-transform:uppercase;letter-spacing:.14em;font-size:.72rem;backdrop-filter:blur(6px)}
+.hero-selo span{color:#4D9BFF}
+.hero h1{font-family:"Poppins",var(--display);font-size:clamp(2.8rem,7vw,5.6rem);font-weight:800;letter-spacing:-.035em;line-height:1.02;margin-top:22px}
+.hero h1 em{font-style:normal;background:linear-gradient(90deg,#1E8BFF,#4DB2FF 55%,#1660E8);-webkit-background-clip:text;background-clip:text;color:transparent}
+.hero p.lead{color:#C3CEE8;font-size:1.15rem;max-width:34rem;margin:22px 0 30px}
 .acoes{display:flex;flex-wrap:wrap;gap:12px}
-.fatos{display:flex;flex-wrap:wrap;gap:22px;margin-top:30px;color:var(--muted)}
-.fatos b{display:block;font-family:var(--display);font-size:1.4rem;color:var(--ink)}
+.btn-brilho{background:linear-gradient(135deg,#1E8BFF,#1660E8);color:#fff;border-radius:999px;padding:13px 26px;box-shadow:0 0 0 1px rgba(77,178,255,.4),0 10px 30px -6px rgba(30,139,255,.75)}
+.btn-brilho:hover{box-shadow:0 0 0 1px rgba(77,178,255,.6),0 12px 36px -4px rgba(30,139,255,.95)}
+.btn-vidro{background:rgba(255,255,255,.06);color:#fff;border:1px solid rgba(255,255,255,.28);border-radius:999px;padding:13px 26px;backdrop-filter:blur(6px)}
+.btn-vidro:hover{background:rgba(255,255,255,.12)}
+.hero .fatos{display:flex;flex-wrap:wrap;gap:22px;margin-top:34px;color:#8FA3CF;font-size:.8rem}
+.hero .fatos b{color:#fff;font-weight:600}
+.hero-descer{position:absolute;left:50%;bottom:22px;transform:translateX(-50%);color:rgba(255,255,255,.75);z-index:1}
 
-/* palco de impressão: o logo "sendo impresso" camada a camada */
-.hero .wrap>*{min-width:0}
-.palco{position:relative;aspect-ratio:5/4;max-width:520px;width:100%;margin-inline:auto;border-radius:28px;background:var(--surface);border:1px solid var(--line);overflow:hidden;box-shadow:0 30px 60px -35px rgba(11,47,122,.45)}
-.palco img{position:absolute;inset:4%;width:92%;height:80%;object-fit:contain}
-.palco .camadas{position:absolute;inset:0;background:repeating-linear-gradient(0deg,rgba(22,96,232,.07) 0 2px,transparent 2px 6px);pointer-events:none}
-.palco .bico{position:absolute;left:0;right:0;height:3px;background:linear-gradient(90deg,transparent,var(--red),transparent);top:8%;box-shadow:0 0 14px var(--red);opacity:.9}
-.palco .legenda{position:absolute;left:14px;bottom:12px;background:var(--ink);color:#fff;padding:5px 10px;border-radius:8px}
+/* cena da impressora (decorativa): o carro com a cabeça sobe junto com o laser enquanto o globo "é impresso" */
+.hero-cena{position:absolute;z-index:-2;right:max(2vw,calc(50% - 640px));top:0;bottom:0;width:min(46vw,560px)}
+.cena-mesa{position:absolute;left:-4%;right:-4%;bottom:10%;height:12%;border-radius:50%;border:2px solid rgba(77,178,255,.55);box-shadow:0 0 40px rgba(30,139,255,.45),inset 0 0 30px rgba(30,139,255,.25);background:radial-gradient(closest-side,rgba(30,139,255,.18),transparent)}
+.cena-peca{position:absolute;left:8%;right:8%;bottom:15%;aspect-ratio:440/288}
+.cena-peca img{position:absolute;left:0;bottom:0;width:100%;height:100%;object-fit:contain;object-position:bottom;filter:drop-shadow(0 0 30px rgba(30,139,255,.45));
+  -webkit-mask-image:repeating-linear-gradient(0deg,#000 0 3px,rgba(0,0,0,.82) 3px 4px);mask-image:repeating-linear-gradient(0deg,#000 0 3px,rgba(0,0,0,.82) 3px 4px)}
+.cena-laser{position:absolute;left:4%;right:4%;bottom:100%;height:2px;background:linear-gradient(90deg,transparent,#4DB2FF,transparent);box-shadow:0 0 18px 3px rgba(77,178,255,.8);opacity:0}
+.cena-carro{position:absolute;left:-30%;right:-30%;bottom:100%;height:118px}
+.cena-trilho{position:absolute;left:0;right:0;top:16px;height:10px;border-radius:6px;background:linear-gradient(180deg,#5A6680,#222A3D);box-shadow:0 6px 18px rgba(0,0,0,.5)}
+.cena-cabeca{position:absolute;left:50%;bottom:20px;width:150px;height:96px;margin-left:-75px;border-radius:16px;background:linear-gradient(180deg,#252E44,#0D1222);box-shadow:0 18px 40px -10px rgba(0,0,0,.8),inset 0 1px 0 rgba(255,255,255,.12)}
+.cena-led{position:absolute;left:14px;right:14px;bottom:10px;height:4px;border-radius:4px;background:#4DB2FF;box-shadow:0 0 16px 3px rgba(77,178,255,.9)}
+.cena-bico{position:absolute;left:50%;bottom:-20px;width:16px;height:20px;margin-left:-8px;background:linear-gradient(180deg,#8892A8,#3B4458);clip-path:polygon(0 0,100% 0,70% 100%,30% 100%)}
 @media (prefers-reduced-motion:no-preference){
-  .palco .bico{animation:bico 3.2s ease-in-out .2s infinite alternate}
+  .cena-peca img{animation:imprimir 8s cubic-bezier(.45,0,.3,1) infinite}
+  .cena-laser{animation:laser 8s cubic-bezier(.45,0,.3,1) infinite}
+  .cena-carro{animation:carro 8s cubic-bezier(.45,0,.3,1) infinite}
+  .hero-descer{animation:descer 1.8s ease-in-out infinite}
 }
-@keyframes bico{from{top:92%}to{top:8%}}
+@keyframes imprimir{0%{clip-path:inset(100% 0 0 0);opacity:1}65%{clip-path:inset(0 0 0 0)}85%{opacity:1}97%,100%{clip-path:inset(0 0 0 0);opacity:0}}
+@keyframes laser{0%{bottom:0;opacity:1}65%{bottom:100%;opacity:1}68%,100%{bottom:100%;opacity:0}}
+@keyframes carro{0%{bottom:0}65%,85%{bottom:100%}100%{bottom:0}}
+@keyframes descer{0%,100%{transform:translate(-50%,0)}50%{transform:translate(-50%,6px)}}
+
+/* botão flutuante do WhatsApp */
+.whats-flutuante{position:fixed;right:max(16px,env(safe-area-inset-right));bottom:max(16px,env(safe-area-inset-bottom));z-index:40;width:58px;height:58px;border-radius:50%;display:grid;place-items:center;background:#25D366;color:#fff;box-shadow:0 12px 28px -8px rgba(18,140,126,.8);transition:transform .15s}
+.whats-flutuante:hover{transform:scale(1.06)}
 
 /* seções */
 section.bloco{padding-block:56px}
@@ -184,7 +208,9 @@ footer .wrap{display:flex;flex-wrap:wrap;gap:20px;justify-content:space-between;
 .toast small{display:block;color:#AFC0E6;margin-top:4px}
 
 @media (max-width:900px){
-  .hero .wrap,.encomenda{grid-template-columns:1fr}
+  .encomenda{grid-template-columns:1fr}
+  .hero-cena{width:min(80vw,440px);right:50%;margin-right:calc(min(80vw,440px) / -2);opacity:.45}
+  .hero::after{background:linear-gradient(180deg,rgba(5,10,28,.55),rgba(5,10,28,.85))}
   .vitrine-fotos{grid-template-columns:repeat(2,1fr)}
   .passos{grid-template-columns:repeat(2,1fr)}
   nav.links{display:none}

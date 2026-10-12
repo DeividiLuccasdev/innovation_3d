@@ -80,33 +80,50 @@ export default async function Home() {
 
       <main id="inicio">
         <section className="hero">
-          <div className="wrap">
-            <div>
-              <span className="selo">Impressão 3D sob medida</span>
-              <h1>
-                <em>Imaginou?</em>
-                <br />A gente <strong>imprime.</strong>
-              </h1>
-              <p className="lead">
-                Decoração para casa, peças personalizadas, festas, empresas, itens geek, organizadores e arte sacra,
-                produzidos camada por camada com acabamento caprichado.
-              </p>
-              <div className="acoes">
-                <a className="btn btn-azul" href="#produtos">Ver produtos</a>
-                <a className="btn btn-linha" href="#encomenda">Fazer uma encomenda</a>
+          <div className="hero-cena" aria-hidden="true">
+            <div className="cena-mesa" />
+            <div className="cena-peca">
+              <img src="/globo-3d.webp" alt="" />
+              <span className="cena-laser" />
+              <div className="cena-carro">
+                <div className="cena-trilho" />
+                <div className="cena-cabeca">
+                  <span className="cena-led" />
+                  <span className="cena-bico" />
+                </div>
               </div>
-              <div className="fatos">
-                <div><b>0,12 mm</b>altura de camada no acabamento fino</div>
-                <div><b>PLA · PETG · TPU</b>materiais rígidos e flexíveis</div>
-              </div>
-            </div>
-            <div className="palco" aria-hidden="true">
-              <img src="/logo.webp" alt="" />
-              <div className="camadas" />
-              <div className="bico" />
-              <span className="legenda mono">imprimindo · camada 412/412</span>
             </div>
           </div>
+
+          <div className="wrap hero-conteudo">
+            <span className="hero-selo mono">
+              <span aria-hidden="true">✦</span> Impressão 3D · Araraquara/SP
+            </span>
+            <h1>
+              <em>Imaginou?</em>
+              <br />A gente imprime.
+            </h1>
+            <p className="lead">
+              Decoração, peças personalizadas, festas, empresas, itens geek e arte sacra, produzidos camada por
+              camada com acabamento caprichado.
+            </p>
+            <div className="acoes">
+              <a className="btn btn-brilho" href="#produtos">
+                Ver produtos <span aria-hidden="true">→</span>
+              </a>
+              <a className="btn btn-vidro" href="#encomenda">Pedir orçamento</a>
+            </div>
+            <div className="fatos mono">
+              <span><b>0,12 mm</b> camada fina</span>
+              <span><b>PLA · PETG · TPU</b> rígidos e flexíveis</span>
+            </div>
+          </div>
+
+          <a className="hero-descer" href="#produtos" aria-label="Ver produtos">
+            <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" aria-hidden="true">
+              <path d="m6 9 6 6 6-6" />
+            </svg>
+          </a>
         </section>
 
         <section className="bloco" id="produtos">
@@ -163,6 +180,16 @@ export default async function Home() {
           </div>
         </section>
       </main>
+
+      <a
+        className="whats-flutuante"
+        target="_blank"
+        rel="noopener noreferrer"
+        href={linkWhatsApp("Olá! Vim pelo site da Innovation 3D.")}
+        aria-label="Conversar no WhatsApp"
+      >
+        <IconeWhatsApp tamanho={28} />
+      </a>
 
       <footer>
         <div className="wrap">
