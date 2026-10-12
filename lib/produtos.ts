@@ -7,6 +7,7 @@ export const CATEGORIAS = [
   "Organização e decoração funcional",
   "Arte sacra",
   "Encomendas personalizadas",
+  "ETs e alienígenas",
 ] as const;
 
 export type Categoria = (typeof CATEGORIAS)[number];
@@ -32,6 +33,7 @@ export const CATALOGO: Record<Categoria, { curto: string; itens: string[]; aviso
       "Abajures personalizados",
       "Enfeites para estantes",
       "Arte sacra",
+      "ETs",
     ],
   },
   "Decoração personalizada": {
@@ -95,6 +97,7 @@ export const CATALOGO: Record<Categoria, { curto: string; itens: string[]; aviso
       "Organizadores gamer",
       "Dioramas decorativos",
       "Peças de decoração inspiradas em jogos",
+      "ETs",
     ],
     aviso:
       "Para personagens e marcas protegidas, a comercialização pode exigir autorização dos titulares.",
@@ -125,6 +128,24 @@ export const CATALOGO: Record<Categoria, { curto: string; itens: string[]; aviso
       "Peças de reposição e suportes sob medida",
       "Miniaturas, action figures e decoração temática",
       "Presentes e decoração para datas especiais",
+    ],
+  },
+  "ETs e alienígenas": {
+    curto: "ETs",
+    itens: [
+      "ETs",
+      "Bonecos de ET",
+      "ETs articulados",
+      "ET de Varginha",
+      "Bustos e cabeças de alienígena",
+      "Miniaturas de discos voadores",
+      "Luminárias de OVNI",
+      "Luminárias de ET",
+      "Dioramas de abdução",
+      "Chaveiros de ET",
+      "Vasos e cachepôs de ET",
+      "Suportes de celular de ET",
+      "Enfeites de ET para estantes",
     ],
   },
   "Arte sacra": {
