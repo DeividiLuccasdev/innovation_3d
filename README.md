@@ -7,6 +7,8 @@ Site da **Innovation 3D**: catálogo de produtos impressos em 3D com pedidos pel
 ## O que o site faz
 
 - **Página inicial:** slogan, catálogo com filtro por categoria, encomenda personalizada e "como funciona".
+- **Carrinho:** o cliente adiciona produtos, escolhe retirada ou frete dos Correios e finaliza pelo WhatsApp com o pedido completo (itens, quantidades, entrega e total). O carrinho fica salvo no navegador.
+- **Assistente Inno:** chat com respostas rápidas (pedido, prazo, materiais, frete, pagamento, personalização), busca no catálogo e encaminha para o WhatsApp. Textos em `lib/chatbot.ts`.
 - **Pedido pelo WhatsApp:** cada produto abre o WhatsApp com a mensagem pronta ("Olá! Tenho interesse em: …").
 - **Frete:** consulta por CEP com valor e prazo do PAC e do SEDEX (via Melhor Envio) ou orçamento pelo WhatsApp.
 - **Esgotado:** o produto ganha a faixa "ESGOTADO", a foto fica em cinza e o botão de pedido é desativado.

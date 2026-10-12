@@ -1,4 +1,5 @@
 import type { Metadata, Viewport } from "next";
+import { CarrinhoProvider } from "@/components/Carrinho";
 import "./globals.css";
 
 export const metadata: Metadata = {
@@ -31,7 +32,9 @@ export default function RootLayout({
           href="https://fonts.googleapis.com/css2?family=Exo+2:ital,wght@0,600;0,800;0,900;1,800&family=Poppins:wght@700;800&family=Figtree:wght@400;500;600;700&family=JetBrains+Mono:wght@500&display=swap"
         />
       </head>
-      <body>{children}</body>
+      <body>
+        <CarrinhoProvider>{children}</CarrinhoProvider>
+      </body>
     </html>
   );
 }

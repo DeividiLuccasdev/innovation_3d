@@ -23,10 +23,10 @@ export const ASSUNTOS: Assunto[] = [
   {
     id: "encomenda",
     rotulo: "Como fazer um pedido",
-    palavras: ["pedido", "pedir", "encomenda", "encomendar", "comprar", "compra", "como funciona"],
+    palavras: ["pedido", "pedir", "encomenda", "encomendar", "comprar", "compra", "como funciona", "carrinho", "finalizar"],
     resposta: {
       texto:
-        "É bem simples:\n1. Escolha um produto do catálogo ou mande a sua ideia (foto, desenho ou referência).\n2. Fazemos o orçamento e mostramos a prévia.\n3. Combinamos cor, tamanho e prazo.\n4. Imprimimos e enviamos pelos Correios ou você retira.",
+        "É bem simples:\n1. No catálogo, toque em Adicionar nos produtos que quiser.\n2. Abra o carrinho (ícone no topo), escolha a entrega e toque em Finalizar pedido pelo WhatsApp.\n3. Confirmamos prazo e pagamento por lá.\n\nPara peça personalizada, mande a ideia (foto, desenho ou referência) que fazemos o orçamento.",
       acoes: [
         { tipo: "secao", alvo: "#produtos", rotulo: "Ver catálogo" },
         whats("Olá! Quero fazer uma encomenda."),
