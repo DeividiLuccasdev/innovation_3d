@@ -97,6 +97,7 @@ export const CATALOGO: Record<Categoria, { curto: string; itens: string[]; aviso
       "Organizadores gamer",
       "Dioramas decorativos",
       "Peças de decoração inspiradas em jogos",
+      "Action figures",
       "ETs",
     ],
     aviso:
@@ -136,6 +137,7 @@ export const CATALOGO: Record<Categoria, { curto: string; itens: string[]; aviso
       "ETs",
       "Bonecos de ET",
       "ETs articulados",
+      "Action figures de ET",
       "ET de Varginha",
       "Bustos e cabeças de alienígena",
       "Miniaturas de discos voadores",
