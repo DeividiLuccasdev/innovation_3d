@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import { BotaoAdicionar } from "./Carrinho";
 import Galeria from "./Galeria";
 import IconeCategoria from "./IconeCategoria";
 import { formatarPreco, nomeCurto, type Produto } from "@/lib/produtos";
@@ -8,9 +9,11 @@ import { linkWhatsApp } from "@/lib/whatsapp";
 
 export default function CardProduto({
   produto,
+  compra = true,
   children,
 }: {
   produto: Produto;
+  compra?: boolean;
   children?: React.ReactNode;
 }) {
   const [fotoAtual, setFotoAtual] = useState(0);
@@ -70,18 +73,9 @@ export default function CardProduto({
             <button className="btn btn-azul btn-pedir" disabled>
               Esgotado
             </button>
-          ) : (
-            <a
-              className="btn btn-azul btn-pedir"
-              target="_blank"
-              rel="noopener noreferrer"
-              href={linkWhatsApp(
-                `Olá! Tenho interesse em: ${produto.nome} (${formatarPreco(produto.preco)})`
-              )}
-            >
-              Pedir
-            </a>
-          )}
+          ) : compra ? (
+            <BotaoAdicionar produto={produto} />
+          ) : null}
         </div>
         <a
           className="personalizar"

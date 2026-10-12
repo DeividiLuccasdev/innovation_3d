@@ -371,7 +371,7 @@ function Painel({ email }: { email: string }) {
 
       <div className="grade">
         {ordenarProdutos(produtos).map((p) => (
-          <CardProduto key={p.id} produto={p}>
+          <CardProduto key={p.id} produto={p} compra={false}>
             <div className="controles-admin">
               <button className={`mini ${p.esgotado ? "ativo-esg" : ""}`} onClick={() => alternar(p, "esgotado")}>
                 {p.esgotado ? "Esgotado ✓" : "Marcar esgotado"}

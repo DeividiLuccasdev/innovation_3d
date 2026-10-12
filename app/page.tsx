@@ -1,6 +1,8 @@
 /* eslint-disable @next/next/no-img-element */
 import Link from "next/link";
+import { BotaoCarrinho, GavetaCarrinho } from "@/components/Carrinho";
 import Catalogo from "@/components/Catalogo";
+import ChatBot from "@/components/ChatBot";
 import Frete from "@/components/Frete";
 import Vitrine from "@/components/Vitrine";
 import IconeInstagram from "@/components/IconeInstagram";
@@ -65,6 +67,7 @@ export default async function Home() {
           >
             <IconeYouTube tamanho={20} />
           </a>
+          <BotaoCarrinho />
           <a
             className="btn btn-vermelho btn-admin"
             target="_blank"
@@ -180,6 +183,9 @@ export default async function Home() {
           </div>
         </section>
       </main>
+
+      <ChatBot produtos={produtos} />
+      <GavetaCarrinho />
 
       <a
         className="whats-flutuante"
