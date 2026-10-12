@@ -33,6 +33,7 @@ export const CATALOGO: Record<Categoria, { curto: string; itens: string[]; aviso
       "Abajures personalizados",
       "Enfeites para estantes",
       "Arte sacra",
+      "ETs",
     ],
   },
   "Decoração personalizada": {
@@ -96,6 +97,7 @@ export const CATALOGO: Record<Categoria, { curto: string; itens: string[]; aviso
       "Organizadores gamer",
       "Dioramas decorativos",
       "Peças de decoração inspiradas em jogos",
+      "ETs",
     ],
     aviso:
       "Para personagens e marcas protegidas, a comercialização pode exigir autorização dos titulares.",
@@ -131,6 +133,7 @@ export const CATALOGO: Record<Categoria, { curto: string; itens: string[]; aviso
   "ETs e alienígenas": {
     curto: "ETs",
     itens: [
+      "ETs",
       "Bonecos de ET",
       "ETs articulados",
       "ET de Varginha",
