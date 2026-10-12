@@ -91,11 +91,44 @@ export const ASSUNTOS: Assunto[] = [
     id: "pagamento",
     rotulo: "Formas de pagamento",
     pergunta: "Quais são as formas de pagamento?",
-    palavras: ["pagamento", "pagar", "pix", "cartao", "credito", "debito", "boleto", "parcelar", "parcela", "parcelamento", "dinheiro", "qr"],
+    palavras: ["pagamento", "pagar", "forma de pagamento", "formas de pagamento", "boleto", "dinheiro"],
     resposta: {
       texto:
-        "As formas de pagamento disponíveis serão informadas durante o atendimento pelo WhatsApp, antes da confirmação da compra.",
-      acoes: [whats("Olá! Quais são as formas de pagamento?", "Perguntar no WhatsApp")],
+        "Aceitamos Pix e cartão de crédito.\n• Pix: você recebe o QR Code e o código copia e cola.\n• Cartão: pagamento pelo link seguro do Mercado Pago, com opção de parcelar.\nO pagamento é enviado junto com a confirmação do pedido.",
+      acoes: [{ tipo: "carrinho", rotulo: "Ver meu carrinho" }],
+    },
+  },
+  {
+    id: "pix",
+    rotulo: "Pix com QR Code",
+    pergunta: "Como funciona o pagamento por Pix?",
+    palavras: ["pix", "qr", "qrcode", "qr code", "copia e cola", "chave pix"],
+    resposta: {
+      texto:
+        "No Pix você recebe um QR Code para escanear no app do seu banco e também o código copia e cola, caso esteja pelo celular. O valor já vem preenchido com o total do pedido. Assim que o pagamento cai, confirmamos e começamos a produção.",
+      acoes: [{ tipo: "carrinho", rotulo: "Ver meu carrinho" }],
+    },
+  },
+  {
+    id: "cartao",
+    rotulo: "Cartão e parcelamento",
+    pergunta: "Posso pagar no cartão e parcelar?",
+    palavras: ["cartao", "credito", "debito", "parcelar", "parcela", "parcelas", "parcelado", "parcelamento", "vezes", "juros"],
+    resposta: {
+      texto:
+        "Aceitamos cartão de crédito pelo Mercado Pago, com opção de parcelamento. O número de parcelas e se há juros aparecem na tela de pagamento, antes de você confirmar.",
+      acoes: [{ tipo: "carrinho", rotulo: "Ver meu carrinho" }],
+    },
+  },
+  {
+    id: "seguranca",
+    rotulo: "Segurança dos dados",
+    pergunta: "Meus dados e meu cartão ficam seguros?",
+    palavras: ["seguranca", "seguro", "segura", "confiavel", "golpe", "fraude", "dados do cartao", "passar meu cartao", "passar o cartao", "meus dados", "privacidade", "lgpd"],
+    resposta: {
+      texto:
+        "Pode ficar tranquilo:\n• O pagamento com cartão é processado pelo Mercado Pago, com certificação de segurança bancária (PCI DSS) e proteção antifraude.\n• A Innovation 3D não recebe nem guarda o número do seu cartão.\n• No Pix, você paga direto pelo app do seu banco.\n• Usamos seu nome, CEP e telefone só para entregar o pedido.",
+      acoes: [],
     },
   },
   {
