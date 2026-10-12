@@ -6,115 +6,179 @@ import { CATALOGO, CATEGORIAS, type Categoria, type Produto } from "./produtos";
 export type Acao =
   | { tipo: "secao"; alvo: string; rotulo: string }
   | { tipo: "whatsapp"; mensagem: string; rotulo: string }
-  | { tipo: "catalogo"; categoria: Categoria; subtipo?: string; rotulo: string };
+  | { tipo: "catalogo"; categoria: Categoria; subtipo?: string; rotulo: string }
+  | { tipo: "carrinho"; rotulo: string };
 
 export type Resposta = { texto: string; acoes: Acao[] };
 
 type Assunto = {
   id: string;
-  rotulo: string;
+  rotulo: string; // texto curto do botão
+  pergunta: string; // pergunta completa que aparece no chat ao tocar no botão
   palavras: string[];
   resposta: Resposta;
 };
 
 const whats = (mensagem: string, rotulo = "Falar no WhatsApp"): Acao => ({ tipo: "whatsapp", mensagem, rotulo });
 
+// Perguntas frequentes (textos definidos pela Innovation 3D)
 export const ASSUNTOS: Assunto[] = [
   {
-    id: "encomenda",
-    rotulo: "Como fazer um pedido",
-    palavras: ["pedido", "pedir", "encomenda", "encomendar", "comprar", "compra", "como funciona", "carrinho", "finalizar"],
+    id: "comprar",
+    rotulo: "Como comprar",
+    pergunta: "Como faço para comprar um produto?",
+    palavras: ["comprar", "compra", "compro", "adquirir", "pedido", "pedir", "encomendar", "como funciona", "carrinho", "finalizar"],
     resposta: {
       texto:
-        "É bem simples:\n1. No catálogo, toque em Adicionar nos produtos que quiser.\n2. Abra o carrinho (ícone no topo), escolha a entrega e toque em Finalizar pedido pelo WhatsApp.\n3. Confirmamos prazo e pagamento por lá.\n\nPara peça personalizada, mande a ideia (foto, desenho ou referência) que fazemos o orçamento.",
+        "Escolha o produto desejado em nosso catálogo, toque em Adicionar e, no carrinho, em Finalizar pedido pelo WhatsApp. Nossa equipe confirmará os detalhes, a disponibilidade e o valor total da compra.",
       acoes: [
         { tipo: "secao", alvo: "#produtos", rotulo: "Ver catálogo" },
-        whats("Olá! Quero fazer uma encomenda."),
+        { tipo: "carrinho", rotulo: "Ver meu carrinho" },
       ],
+    },
+  },
+  {
+    id: "personalizadas",
+    rotulo: "Peças personalizadas",
+    pergunta: "Vocês fazem impressões 3D personalizadas?",
+    palavras: ["personalizado", "personalizada", "personalizadas", "personalizar", "nome", "logo", "foto", "imagem", "desenho", "arquivo", "stl", "obj", "modelar", "modelagem", "sob medida"],
+    resposta: {
+      texto:
+        "Sim! Trabalhamos com peças personalizadas em impressão 3D. Entre em contato pelo WhatsApp, envie sua ideia, imagem ou referência e analisaremos a possibilidade de produção.",
+      acoes: [whats("Olá! Quero fazer uma peça personalizada. Vou mandar a minha ideia.", "Enviar minha ideia")],
     },
   },
   {
     id: "prazo",
     rotulo: "Prazo de produção",
-    palavras: ["prazo", "demora", "quanto tempo", "dias", "pronto", "fica pronto", "entrega rapida", "urgente"],
+    pergunta: "Qual é o prazo de produção?",
+    palavras: ["prazo", "demora", "quanto tempo", "dias", "pronto", "fica pronto", "urgente", "producao"],
     resposta: {
       texto:
-        "O prazo depende do tamanho, do acabamento e da quantidade. Peças pequenas ficam prontas mais rápido; peças grandes ou em quantidade levam mais tempo. O prazo exato vai junto com o orçamento. Se for envio, some o prazo dos Correios.",
+        "O prazo depende do tamanho, da complexidade e da quantidade de peças solicitadas. Informamos a previsão de produção antes da confirmação do pedido.",
+      acoes: [whats("Olá! Qual o prazo de produção para o meu pedido?", "Perguntar o prazo")],
+    },
+  },
+  {
+    id: "brasil",
+    rotulo: "Entrega no Brasil",
+    pergunta: "Vocês entregam para todo o Brasil?",
+    palavras: ["entrega", "entregam", "entregar", "envio", "enviam", "enviar", "brasil", "correios", "outro estado", "minha cidade", "retirar", "retirada"],
+    resposta: {
+      texto:
+        "Consulte a disponibilidade de envio para seu CEP. Informaremos as opções de transporte, os valores e os prazos estimados antes de finalizar o pedido.",
       acoes: [
-        { tipo: "secao", alvo: "#frete", rotulo: "Calcular frete" },
-        whats("Olá! Qual o prazo para fazer uma peça?", "Perguntar o prazo"),
+        { tipo: "secao", alvo: "#frete", rotulo: "Consultar meu CEP" },
+        whats("Olá! Vocês entregam na minha cidade?", "Perguntar no WhatsApp"),
       ],
     },
   },
   {
-    id: "materiais",
-    rotulo: "Materiais e cores",
-    palavras: ["material", "materiais", "pla", "petg", "tpu", "resina", "cor", "cores", "flexivel", "resistente", "acabamento", "pintura", "pintado"],
-    resposta: {
-      texto:
-        "Imprimimos em PLA, PETG e TPU, com materiais rígidos e flexíveis e camada de até 0,12 mm no acabamento fino. As cores disponíveis são confirmadas no orçamento. Se a peça for ficar ao sol ou precisar aguentar esforço, avisa que indicamos o material certo.",
-      acoes: [whats("Olá! Quais cores e materiais vocês têm disponíveis?", "Ver cores disponíveis")],
-    },
-  },
-  {
     id: "frete",
-    rotulo: "Frete e entrega",
-    palavras: ["frete", "entrega", "entregar", "envio", "enviar", "correios", "sedex", "pac", "cep", "retirar", "retirada", "buscar", "araraquara"],
+    rotulo: "Calcular frete",
+    pergunta: "Como posso calcular o frete?",
+    palavras: ["frete", "calcular", "cep", "sedex", "pac", "valor do frete", "custo de envio"],
     resposta: {
       texto:
-        "Enviamos pelos Correios (PAC ou SEDEX) para todo o Brasil, saindo de Araraquara/SP. Você calcula o valor na seção Frete, só com o CEP. Também dá para combinar a retirada.",
+        "Informe seu CEP no campo de cálculo de frete, quando disponível, ou solicite uma cotação pelo WhatsApp. O valor depende do destino e das características do pedido.",
       acoes: [
         { tipo: "secao", alvo: "#frete", rotulo: "Calcular frete" },
-        whats("Olá! Quero combinar a entrega do meu pedido.", "Combinar retirada"),
+        whats("Olá! Quero uma cotação de frete para o meu CEP.", "Cotar no WhatsApp"),
       ],
     },
   },
   {
     id: "pagamento",
     rotulo: "Formas de pagamento",
-    palavras: ["pagamento", "pagar", "pix", "cartao", "credito", "debito", "boleto", "parcelar", "parcela", "dinheiro"],
+    pergunta: "Quais são as formas de pagamento?",
+    palavras: ["pagamento", "pagar", "pix", "cartao", "credito", "debito", "boleto", "parcelar", "parcela", "parcelamento", "dinheiro", "qr"],
     resposta: {
-      texto: "Aceitamos Pix e cartão. Ao finalizar o pedido pelo WhatsApp, enviamos o Pix ou o link de pagamento do cartão junto com a confirmação do pedido.",
+      texto:
+        "As formas de pagamento disponíveis serão informadas durante o atendimento pelo WhatsApp, antes da confirmação da compra.",
       acoes: [whats("Olá! Quais são as formas de pagamento?", "Perguntar no WhatsApp")],
     },
   },
   {
-    id: "preco",
-    rotulo: "Preços e orçamento",
-    palavras: ["preco", "precos", "valor", "valores", "quanto custa", "custa", "orcamento", "barato", "caro"],
+    id: "cor-tamanho",
+    rotulo: "Cor e tamanho",
+    pergunta: "Posso escolher a cor e o tamanho da peça?",
+    palavras: ["cor", "cores", "tamanho", "tamanhos", "maior", "menor", "escolher", "medida", "medidas"],
     resposta: {
       texto:
-        "Os produtos do catálogo já mostram o preço. Para peças personalizadas, o valor depende do tamanho, do material e do tempo de impressão. Mande a ideia que fazemos o orçamento sem compromisso.",
-      acoes: [
-        { tipo: "secao", alvo: "#produtos", rotulo: "Ver catálogo" },
-        whats("Olá! Quero um orçamento de uma peça personalizada.", "Pedir orçamento"),
-      ],
+        "Em muitos produtos, sim! As opções dependem do modelo e da disponibilidade de materiais. Consulte nossa equipe para verificar as possibilidades de personalização.",
+      acoes: [whats("Olá! Quero escolher a cor e o tamanho de uma peça.", "Consultar opções")],
     },
   },
   {
-    id: "personalizado",
-    rotulo: "Peça personalizada",
-    palavras: ["personalizado", "personalizada", "personalizar", "nome", "logo", "foto", "desenho", "arquivo", "stl", "obj", "projeto", "modelar", "modelagem", "sob medida", "ideia"],
+    id: "resistencia",
+    rotulo: "Resistência",
+    pergunta: "Os produtos são resistentes?",
+    palavras: ["resistente", "resistencia", "quebra", "quebrar", "durabilidade", "dura", "material", "materiais", "pla", "petg", "tpu", "sol", "calor", "agua", "cuidados"],
     resposta: {
       texto:
-        "Fazemos sim! Pode mandar foto, desenho, uma referência da internet ou o arquivo 3D (STL ou OBJ). Se ainda não existe o modelo, avaliamos a modelagem. Também colocamos nome, logo ou data na peça.",
-      acoes: [whats("Olá! Quero fazer uma peça personalizada. Vou mandar a referência.", "Enviar minha ideia")],
+        "A resistência depende do material utilizado, do formato da peça e das condições de uso. Nossa equipe pode orientar sobre os cuidados recomendados para cada produto.",
+      acoes: [whats("Olá! Quero saber sobre a resistência e os cuidados com uma peça.", "Perguntar no WhatsApp")],
+    },
+  },
+  {
+    id: "fora-catalogo",
+    rotulo: "Peça fora do catálogo",
+    pergunta: "Posso solicitar uma peça que não está no catálogo?",
+    palavras: ["nao esta no catalogo", "fora do catalogo", "nao tem no catalogo", "outra peca", "ideia", "referencia", "projeto"],
+    resposta: {
+      texto:
+        "Sim! Envie sua ideia ou referência pelo WhatsApp. Avaliaremos a viabilidade da impressão e prepararemos um orçamento personalizado.",
+      acoes: [whats("Olá! Quero uma peça que não está no catálogo. Vou mandar a referência.", "Enviar referência")],
+    },
+  },
+  {
+    id: "troca",
+    rotulo: "Troca e devolução",
+    pergunta: "Como funciona a troca ou devolução?",
+    palavras: ["troca", "trocar", "devolucao", "devolver", "arrependimento", "reembolso", "defeito", "garantia", "quebrado", "chegou quebrado"],
+    resposta: {
+      texto:
+        "Entre em contato com nossa equipe para receber as orientações. As solicitações serão analisadas conforme o Código de Defesa do Consumidor, incluindo o direito de arrependimento quando aplicável.",
+      acoes: [whats("Olá! Preciso de ajuda com troca ou devolução.", "Falar sobre troca")],
+    },
+  },
+  {
+    id: "acompanhar",
+    rotulo: "Acompanhar pedido",
+    pergunta: "Como acompanhar meu pedido?",
+    palavras: ["acompanhar", "rastreio", "rastreamento", "rastrear", "codigo de rastreio", "meu pedido", "status", "andamento", "chegou", "onde esta"],
+    resposta: {
+      texto:
+        "Você pode entrar em contato pelo WhatsApp para consultar o andamento da produção e as informações de envio. Quando houver rastreamento disponível, ele será informado.",
+      acoes: [whats("Olá! Quero acompanhar o meu pedido.", "Consultar meu pedido")],
+    },
+  },
+  {
+    id: "quantidade",
+    rotulo: "Grandes quantidades",
+    pergunta: "É possível comprar em grandes quantidades?",
+    palavras: ["quantidade", "quantidades", "atacado", "lote", "muitas", "varias", "brinde", "brindes", "lembrancinha", "lembrancinhas", "evento", "eventos", "empresa", "corporativo"],
+    resposta: {
+      texto:
+        "Sim! Você pode solicitar um orçamento para quantidades maiores, brindes, lembrancinhas, eventos e pedidos corporativos. As condições serão definidas conforme o projeto.",
+      acoes: [whats("Olá! Quero um orçamento para uma quantidade maior de peças.", "Pedir orçamento")],
     },
   },
   {
     id: "atendente",
-    rotulo: "Falar com uma pessoa",
+    rotulo: "Falar com a equipe",
+    pergunta: "Quero falar com uma pessoa.",
     palavras: ["atendente", "pessoa", "humano", "falar com", "whatsapp", "zap", "telefone", "contato", "ligar"],
     resposta: {
-      texto: "Claro! Te passo para o nosso atendimento no WhatsApp.",
-      acoes: [whats("Olá! Vim pelo site e quero falar com o atendimento.", "Abrir WhatsApp")],
+      texto: "Claro! Te passo para a nossa equipe no WhatsApp.",
+      acoes: [whats("Olá! Vim pelo site e quero falar com a equipe.", "Abrir WhatsApp")],
     },
   },
 ];
 
 export const SAUDACAO: Resposta = {
   texto:
-    "Oi! Eu sou o Inno, assistente da Innovation 3D. Posso tirar dúvidas rápidas sobre pedidos, prazos, materiais e frete, ou ajudar a achar um produto. Escolha um assunto ou escreva sua pergunta.",
+    "Oi! Eu sou o Inno, assistente da Innovation 3D. Escolha uma das perguntas frequentes abaixo, escreva sua dúvida ou me diga o produto que procura.",
   acoes: [],
 };
 
