@@ -74,7 +74,7 @@ export const ASSUNTOS: Assunto[] = [
     rotulo: "Formas de pagamento",
     palavras: ["pagamento", "pagar", "pix", "cartao", "credito", "debito", "boleto", "parcelar", "parcela", "dinheiro"],
     resposta: {
-      texto: "A forma de pagamento é combinada no atendimento pelo WhatsApp, junto com o orçamento.",
+      texto: "Aceitamos Pix e cartão. Ao finalizar o pedido pelo WhatsApp, enviamos o Pix ou o link de pagamento do cartão junto com a confirmação do pedido.",
       acoes: [whats("Olá! Quais são as formas de pagamento?", "Perguntar no WhatsApp")],
     },
   },
