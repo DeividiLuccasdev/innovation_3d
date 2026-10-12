@@ -34,7 +34,7 @@ export const VITRINE: { titulo: string; categorias: Categoria[]; tipos: string[]
   },
   {
     titulo: "Miniaturas, action figures e decoração temática",
-    categorias: ["Decoração geek e temática"],
+    categorias: ["Decoração geek e temática", "ETs e alienígenas"],
     tipos: ["Miniaturas de animais", "Miniaturas personalizadas"],
   },
   {

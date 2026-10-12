@@ -25,6 +25,14 @@ export default function IconeCategoria({ categoria }: { categoria: Categoria | s
           <path d="M50 36v70M50 36c-8-16-26-16-22-4 3 6 22 4 22 4zm0 0c8-16 26-16 22-4-3 6-22 4-22 4z" />
         </svg>
       );
+    case "ETs e alienígenas":
+      return (
+        <svg viewBox="0 0 100 120" fill="none" stroke="#2BD48A" strokeWidth="4" strokeLinejoin="round">
+          <path d="M50 10c22 0 34 16 34 36 0 26-20 52-34 62C36 98 16 72 16 46c0-20 12-36 34-36z" fill="#D9FBEA" />
+          <path d="M26 50c8-2 16 4 18 14-10 2-18-4-18-14zM74 50c-8-2-16 4-18 14 10 2 18-4 18-14z" fill="#0B1530" stroke="#0B1530" />
+          <path d="M44 88h12" />
+        </svg>
+      );
     case "Arte sacra":
       return (
         <svg viewBox="0 0 100 120" fill="none" stroke="#0B2F7A" strokeWidth="4" strokeLinejoin="round">

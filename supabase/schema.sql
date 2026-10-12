@@ -14,7 +14,8 @@ create table if not exists public.produtos (
     'Decoração geek e temática',
     'Organização e decoração funcional',
     'Arte sacra',
-    'Encomendas personalizadas'
+    'Encomendas personalizadas',
+    'ETs e alienígenas'
   )),
   subcategoria text,
   material text,
