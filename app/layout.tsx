@@ -1,4 +1,4 @@
-import type { Metadata } from "next";
+import type { Metadata, Viewport } from "next";
 import "./globals.css";
 
 export const metadata: Metadata = {
@@ -10,6 +10,11 @@ export const metadata: Metadata = {
     description: "Imaginou? A gente imprime.",
     images: ["/og.jpg"],
   },
+};
+
+// Barra do navegador no celular com o mesmo tom escuro do site
+export const viewport: Viewport = {
+  themeColor: "#050A1C",
 };
 
 export default function RootLayout({
