@@ -34,6 +34,7 @@ export const CATALOGO: Record<Categoria, { curto: string; itens: string[]; aviso
       "Enfeites para estantes",
       "Arte sacra",
       "ETs",
+      "Action figures",
     ],
   },
   "Decoração personalizada": {
