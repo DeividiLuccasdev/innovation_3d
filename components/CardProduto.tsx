@@ -5,7 +5,7 @@ import { BotaoAdicionar } from "./Carrinho";
 import Galeria from "./Galeria";
 import IconeCategoria from "./IconeCategoria";
 import { formatarPreco, nomeCurto, type Produto } from "@/lib/produtos";
-import { linkWhatsApp } from "@/lib/whatsapp";
+import { abrirOrcamento } from "./Orcamento";
 
 export default function CardProduto({
   produto,
@@ -77,18 +77,19 @@ export default function CardProduto({
             <BotaoAdicionar produto={produto} />
           ) : null}
         </div>
-        <a
-          className="personalizar"
-          target="_blank"
-          rel="noopener noreferrer"
-          href={linkWhatsApp(
-            produto.esgotado
-              ? `Olá! Vi que ${produto.nome} está esgotado. Vocês fazem sob encomenda?`
-              : `Olá! Quero personalizar: ${produto.nome} (cor, tamanho ou nome)`
-          )}
-        >
-          {produto.esgotado ? "Encomendar mesmo assim" : "Quero personalizar"}
-        </a>
+        {compra && (
+          <button
+            type="button"
+            className="personalizar"
+            onClick={() =>
+              abrirOrcamento(
+                produto.esgotado ? `Encomenda: ${produto.nome} (esgotado)` : `Personalizar: ${produto.nome}`
+              )
+            }
+          >
+            {produto.esgotado ? "Encomendar mesmo assim" : "Quero personalizar"}
+          </button>
+        )}
       </div>
 
       {children}

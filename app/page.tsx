@@ -4,15 +4,14 @@ import { BotaoCarrinho, GavetaCarrinho } from "@/components/Carrinho";
 import Catalogo from "@/components/Catalogo";
 import ChatBot from "@/components/ChatBot";
 import Frete from "@/components/Frete";
+import ModalOrcamento, { BotaoOrcamento } from "@/components/Orcamento";
 import Vitrine from "@/components/Vitrine";
 import IconeInstagram from "@/components/IconeInstagram";
-import IconeWhatsApp from "@/components/IconeWhatsApp";
 import IconeYouTube from "@/components/IconeYouTube";
 import Marca from "@/components/Marca";
 import { PRODUTOS_EXEMPLO, type Produto } from "@/lib/produtos";
 import { supabase, supabaseConfigurado } from "@/lib/supabase";
 import { INSTAGRAM_ARROBA, INSTAGRAM_URL, YOUTUBE_ARROBA, YOUTUBE_URL } from "@/lib/redes";
-import { linkWhatsApp, telefoneFormatado } from "@/lib/whatsapp";
 
 // Atualiza o catálogo no máximo a cada 30 segundos
 export const revalidate = 30;
@@ -68,16 +67,6 @@ export default async function Home() {
             <IconeYouTube tamanho={20} />
           </a>
           <BotaoCarrinho />
-          <a
-            className="btn btn-vermelho btn-admin"
-            target="_blank"
-            rel="noopener noreferrer"
-            href={linkWhatsApp("Olá! Vim pelo site da Innovation 3D.")}
-            aria-label="WhatsApp"
-          >
-            <IconeWhatsApp />
-            <span className="rotulo">WhatsApp</span>
-          </a>
         </div>
       </header>
 
@@ -152,14 +141,9 @@ export default async function Home() {
                   Envie uma foto, um desenho ou só a ideia. Fazemos o orçamento, mostramos a prévia e
                   imprimimos na cor e no tamanho que você escolher.
                 </p>
-                <a
-                  className="btn btn-vermelho"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  href={linkWhatsApp("Olá! Quero fazer uma encomenda personalizada.")}
-                >
-                  Pedir orçamento pelo WhatsApp
-                </a>
+                <BotaoOrcamento className="btn btn-vermelho" assunto="Encomenda personalizada">
+                  Pedir orçamento
+                </BotaoOrcamento>
               </div>
               <Vitrine produtos={produtos} />
             </div>
@@ -176,7 +160,7 @@ export default async function Home() {
             </div>
             <div className="passos">
               <div className="passo"><h3>Escolha</h3><p>Escolha um produto do catálogo ou conte sua ideia.</p></div>
-              <div className="passo"><h3>Peça pelo WhatsApp</h3><p>Combinamos cor, tamanho, prazo e pagamento.</p></div>
+              <div className="passo"><h3>Faça o pedido</h3><p>Pelo carrinho ou pelo pedido de orçamento. Confirmamos tudo por e-mail.</p></div>
               <div className="passo"><h3>Impressão</h3><p>Sua peça é impressa e recebe acabamento.</p></div>
               <div className="passo"><h3>Entrega</h3><p>Retirada combinada ou envio pelos Correios para todo o Brasil.</p></div>
             </div>
@@ -186,33 +170,11 @@ export default async function Home() {
 
       <ChatBot produtos={produtos} />
       <GavetaCarrinho />
-
-      <a
-        className="whats-flutuante"
-        target="_blank"
-        rel="noopener noreferrer"
-        href={linkWhatsApp("Olá! Vim pelo site da Innovation 3D.")}
-        aria-label="Conversar no WhatsApp"
-      >
-        <IconeWhatsApp tamanho={28} />
-      </a>
+      <ModalOrcamento />
 
       <footer>
         <div className="wrap">
           <Marca />
-          <a
-            className="badge-whatsapp"
-            target="_blank"
-            rel="noopener noreferrer"
-            href={linkWhatsApp("Olá! Vim pelo site da Innovation 3D.")}
-            aria-label={`Falar no WhatsApp: ${telefoneFormatado()}`}
-          >
-            <IconeWhatsApp tamanho={22} />
-            <span>
-              <small>Fale no WhatsApp</small>
-              {telefoneFormatado()}
-            </span>
-          </a>
           <a
             className="badge-instagram"
             target="_blank"

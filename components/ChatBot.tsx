@@ -4,7 +4,7 @@ import { useEffect, useRef, useState, type FormEvent } from "react";
 import { ASSUNTOS, SAUDACAO, responder, type Acao, type Resposta } from "@/lib/chatbot";
 import type { Produto } from "@/lib/produtos";
 import { useCarrinho } from "./Carrinho";
-import { linkWhatsApp } from "@/lib/whatsapp";
+import { abrirOrcamento } from "./Orcamento";
 
 type Mensagem = { de: "bot" | "cliente"; texto: string; acoes?: Acao[] };
 
@@ -44,11 +44,11 @@ export default function ChatBot({ produtos }: { produtos: Produto[] }) {
   }
 
   function agir(acao: Acao) {
-    if (acao.tipo === "whatsapp") {
-      window.open(linkWhatsApp(acao.mensagem), "_blank", "noopener,noreferrer");
+    setAberto(false);
+    if (acao.tipo === "orcamento") {
+      abrirOrcamento(acao.assunto);
       return;
     }
-    setAberto(false);
     if (acao.tipo === "carrinho") {
       carrinho.abrir();
       return;
@@ -112,7 +112,7 @@ export default function ChatBot({ produtos }: { produtos: Produto[] }) {
                 {m.acoes && m.acoes.length > 0 && (
                   <div className="chat-acoes">
                     {m.acoes.map((a) => (
-                      <button key={a.rotulo} type="button" className={a.tipo === "whatsapp" ? "whats" : ""} onClick={() => agir(a)}>
+                      <button key={a.rotulo} type="button" className={a.tipo === "orcamento" ? "destaque" : ""} onClick={() => agir(a)}>
                         {a.rotulo}
                       </button>
                     ))}

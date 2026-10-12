@@ -1,11 +1,11 @@
 import { CATALOGO, CATEGORIAS, type Categoria, type Produto } from "./produtos";
 
 // Assistente de dúvidas preliminares: respostas fixas por assunto, busca no catálogo
-// e, quando não sabe, passa a pergunta para o WhatsApp. Edite os textos aqui.
+// e, quando não sabe, abre o formulário com a pergunta. Edite os textos aqui.
 
 export type Acao =
   | { tipo: "secao"; alvo: string; rotulo: string }
-  | { tipo: "whatsapp"; mensagem: string; rotulo: string }
+  | { tipo: "orcamento"; assunto: string; rotulo: string }
   | { tipo: "catalogo"; categoria: Categoria; subtipo?: string; rotulo: string }
   | { tipo: "carrinho"; rotulo: string };
 
@@ -19,7 +19,7 @@ type Assunto = {
   resposta: Resposta;
 };
 
-const whats = (mensagem: string, rotulo = "Falar no WhatsApp"): Acao => ({ tipo: "whatsapp", mensagem, rotulo });
+const formulario = (assunto: string, rotulo = "Enviar pelo formulário"): Acao => ({ tipo: "orcamento", assunto, rotulo });
 
 // Perguntas frequentes (textos definidos pela Innovation 3D)
 export const ASSUNTOS: Assunto[] = [
@@ -30,7 +30,7 @@ export const ASSUNTOS: Assunto[] = [
     palavras: ["comprar", "compra", "compro", "adquirir", "pedido", "pedir", "encomendar", "como funciona", "carrinho", "finalizar"],
     resposta: {
       texto:
-        "Escolha o produto desejado em nosso catálogo, toque em Adicionar e, no carrinho, em Finalizar pedido pelo WhatsApp. Nossa equipe confirmará os detalhes, a disponibilidade e o valor total da compra.",
+        "Escolha o produto desejado em nosso catálogo, toque em Adicionar e, no carrinho, preencha a entrega e seus dados e toque em Confirmar pedido. Nossa equipe confirmará por e-mail os detalhes, a disponibilidade e o valor total da compra.",
       acoes: [
         { tipo: "secao", alvo: "#produtos", rotulo: "Ver catálogo" },
         { tipo: "carrinho", rotulo: "Ver meu carrinho" },
@@ -44,8 +44,8 @@ export const ASSUNTOS: Assunto[] = [
     palavras: ["personalizado", "personalizada", "personalizadas", "personalizar", "nome", "logo", "foto", "imagem", "desenho", "arquivo", "stl", "obj", "modelar", "modelagem", "sob medida"],
     resposta: {
       texto:
-        "Sim! Trabalhamos com peças personalizadas em impressão 3D. Entre em contato pelo WhatsApp, envie sua ideia, imagem ou referência e analisaremos a possibilidade de produção.",
-      acoes: [whats("Olá! Quero fazer uma peça personalizada. Vou mandar a minha ideia.", "Enviar minha ideia")],
+        "Sim! Trabalhamos com peças personalizadas em impressão 3D. Toque em Solicitar orçamento, conte sua ideia e mande o link de uma imagem ou referência. Analisaremos a possibilidade de produção e respondemos com valor e prazo.",
+      acoes: [formulario("Peça personalizada", "Solicitar orçamento")],
     },
   },
   {
@@ -56,7 +56,7 @@ export const ASSUNTOS: Assunto[] = [
     resposta: {
       texto:
         "O prazo depende do tamanho, da complexidade e da quantidade de peças solicitadas. Informamos a previsão de produção antes da confirmação do pedido.",
-      acoes: [whats("Olá! Qual o prazo de produção para o meu pedido?", "Perguntar o prazo")],
+      acoes: [formulario("Prazo de produção", "Perguntar o prazo")],
     },
   },
   {
@@ -69,7 +69,6 @@ export const ASSUNTOS: Assunto[] = [
         "Consulte a disponibilidade de envio para seu CEP. Informaremos as opções de transporte, os valores e os prazos estimados antes de finalizar o pedido.",
       acoes: [
         { tipo: "secao", alvo: "#frete", rotulo: "Consultar meu CEP" },
-        whats("Olá! Vocês entregam na minha cidade?", "Perguntar no WhatsApp"),
       ],
     },
   },
@@ -80,10 +79,9 @@ export const ASSUNTOS: Assunto[] = [
     palavras: ["frete", "calcular", "cep", "sedex", "pac", "valor do frete", "custo de envio"],
     resposta: {
       texto:
-        "Informe seu CEP no campo de cálculo de frete, quando disponível, ou solicite uma cotação pelo WhatsApp. O valor depende do destino e das características do pedido.",
+        "Informe seu CEP no campo de cálculo de frete, quando disponível, ou finalize o pedido com o seu CEP que confirmamos o frete exato. O valor depende do destino e das características do pedido.",
       acoes: [
         { tipo: "secao", alvo: "#frete", rotulo: "Calcular frete" },
-        whats("Olá! Quero uma cotação de frete para o meu CEP.", "Cotar no WhatsApp"),
       ],
     },
   },
@@ -138,8 +136,8 @@ export const ASSUNTOS: Assunto[] = [
     palavras: ["cor", "cores", "tamanho", "tamanhos", "maior", "menor", "escolher", "medida", "medidas"],
     resposta: {
       texto:
-        "Em muitos produtos, sim! As opções dependem do modelo e da disponibilidade de materiais. Consulte nossa equipe para verificar as possibilidades de personalização.",
-      acoes: [whats("Olá! Quero escolher a cor e o tamanho de uma peça.", "Consultar opções")],
+        "Em muitos produtos, sim! As opções dependem do modelo e da disponibilidade de materiais. Peça um orçamento informando a cor e o tamanho que deseja e verificamos as possibilidades.",
+      acoes: [formulario("Cor e tamanho de uma peça", "Consultar opções")],
     },
   },
   {
@@ -150,7 +148,7 @@ export const ASSUNTOS: Assunto[] = [
     resposta: {
       texto:
         "A resistência depende do material utilizado, do formato da peça e das condições de uso. Nossa equipe pode orientar sobre os cuidados recomendados para cada produto.",
-      acoes: [whats("Olá! Quero saber sobre a resistência e os cuidados com uma peça.", "Perguntar no WhatsApp")],
+      acoes: [formulario("Resistência e cuidados com uma peça", "Perguntar à equipe")],
     },
   },
   {
@@ -160,8 +158,8 @@ export const ASSUNTOS: Assunto[] = [
     palavras: ["nao esta no catalogo", "fora do catalogo", "nao tem no catalogo", "outra peca", "ideia", "referencia", "projeto"],
     resposta: {
       texto:
-        "Sim! Envie sua ideia ou referência pelo WhatsApp. Avaliaremos a viabilidade da impressão e prepararemos um orçamento personalizado.",
-      acoes: [whats("Olá! Quero uma peça que não está no catálogo. Vou mandar a referência.", "Enviar referência")],
+        "Sim! Envie sua ideia ou referência pelo formulário de orçamento. Avaliaremos a viabilidade da impressão e prepararemos um orçamento personalizado.",
+      acoes: [formulario("Peça fora do catálogo", "Enviar referência")],
     },
   },
   {
@@ -171,8 +169,8 @@ export const ASSUNTOS: Assunto[] = [
     palavras: ["troca", "trocar", "devolucao", "devolver", "arrependimento", "reembolso", "defeito", "garantia", "quebrado", "chegou quebrado"],
     resposta: {
       texto:
-        "Entre em contato com nossa equipe para receber as orientações. As solicitações serão analisadas conforme o Código de Defesa do Consumidor, incluindo o direito de arrependimento quando aplicável.",
-      acoes: [whats("Olá! Preciso de ajuda com troca ou devolução.", "Falar sobre troca")],
+        "Envie sua solicitação pelo formulário, com o número do pedido, para receber as orientações. As solicitações serão analisadas conforme o Código de Defesa do Consumidor, incluindo o direito de arrependimento quando aplicável.",
+      acoes: [formulario("Troca ou devolução", "Solicitar troca")],
     },
   },
   {
@@ -182,8 +180,8 @@ export const ASSUNTOS: Assunto[] = [
     palavras: ["acompanhar", "rastreio", "rastreamento", "rastrear", "codigo de rastreio", "meu pedido", "status", "andamento", "chegou", "onde esta"],
     resposta: {
       texto:
-        "Você pode entrar em contato pelo WhatsApp para consultar o andamento da produção e as informações de envio. Quando houver rastreamento disponível, ele será informado.",
-      acoes: [whats("Olá! Quero acompanhar o meu pedido.", "Consultar meu pedido")],
+        "Enviamos as atualizações do pedido por e-mail: confirmação, produção e envio. Quando houver rastreamento disponível, o código chega no seu e-mail.",
+      acoes: [formulario("Andamento do meu pedido", "Falar sobre meu pedido")],
     },
   },
   {
@@ -194,17 +192,17 @@ export const ASSUNTOS: Assunto[] = [
     resposta: {
       texto:
         "Sim! Você pode solicitar um orçamento para quantidades maiores, brindes, lembrancinhas, eventos e pedidos corporativos. As condições serão definidas conforme o projeto.",
-      acoes: [whats("Olá! Quero um orçamento para uma quantidade maior de peças.", "Pedir orçamento")],
+      acoes: [formulario("Grande quantidade", "Pedir orçamento")],
     },
   },
   {
     id: "atendente",
     rotulo: "Falar com a equipe",
     pergunta: "Quero falar com uma pessoa.",
-    palavras: ["atendente", "pessoa", "humano", "falar com", "whatsapp", "zap", "telefone", "contato", "ligar"],
+    palavras: ["atendente", "pessoa", "humano", "falar com", "whatsapp", "zap", "telefone", "contato", "ligar", "email"],
     resposta: {
-      texto: "Claro! Te passo para a nossa equipe no WhatsApp.",
-      acoes: [whats("Olá! Vim pelo site e quero falar com a equipe.", "Abrir WhatsApp")],
+      texto: "Claro! Deixe sua mensagem no formulário que a nossa equipe responde por e-mail.",
+      acoes: [formulario("Contato pelo site", "Falar com a equipe")],
     },
   },
 ];
@@ -263,7 +261,7 @@ function buscarNoCatalogo(pergunta: string, produtos: Produto[]): Resposta | nul
     subtipo: t.subtipo,
     rotulo: `${CATALOGO[t.categoria].curto} › ${t.subtipo}`,
   }));
-  acoes.push(whats(`Olá! Tenho interesse em: ${pergunta.trim()}`, "Pedir pelo WhatsApp"));
+  acoes.push(formulario(pergunta.trim().slice(0, 160), "Pedir orçamento"));
 
   const nomes = achados.map((p) => `• ${p.nome}`).join("\n");
   const texto = achados.length
@@ -288,7 +286,7 @@ export function responder(pergunta: string, produtos: Produto[]): Resposta {
 
   return {
     texto:
-      "Essa eu não sei responder por aqui. Posso te passar para o nosso atendimento no WhatsApp com a sua pergunta já escrita.",
-    acoes: [whats(`Olá! Vim pelo site e tenho uma dúvida: ${pergunta.trim()}`, "Enviar pergunta no WhatsApp")],
+      "Essa eu não sei responder por aqui. Envie sua pergunta pelo formulário que a nossa equipe responde por e-mail.",
+    acoes: [formulario(`Dúvida: ${pergunta.trim()}`.slice(0, 160), "Enviar pergunta")],
   };
 }

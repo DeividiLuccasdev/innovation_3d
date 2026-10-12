@@ -6,6 +6,8 @@ export type OpcaoFrete = { servico: string; preco: number; prazo: number };
 export type RespostaFrete = {
   cidade: string | null;
   uf: string | null;
+  logradouro?: string | null;
+  bairro?: string | null;
   opcoes: OpcaoFrete[];
   erro?: string;
 };
