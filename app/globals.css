@@ -39,6 +39,8 @@ nav.links a:hover{color:var(--blue)}
 .btn-youtube{display:inline-grid;place-items:center;width:40px;height:40px;border-radius:12px;color:#fff;background:#FF0000;flex:none;transition:transform .15s}
 nav.links .link-admin{border:1.5px solid var(--line);border-radius:999px;padding:4px 12px}
 footer .link-admin{color:var(--blue);font-weight:600}
+.creditos{margin:24px 0 0;padding-top:16px;border-top:1px solid var(--line);text-align:center;color:var(--muted);font-size:.75rem}
+.creditos a{color:var(--accent);font-weight:600;text-underline-offset:3px}
 .btn-admin[aria-pressed="true"]{background:var(--blue);color:#fff;border-color:var(--blue)}
 
 /* hero: oficina escura com a impressora "imprimindo" o globo da marca */
@@ -286,3 +288,6 @@ footer .wrap{display:flex;flex-wrap:wrap;gap:20px;justify-content:space-between;
   .subcategorias .filtros{flex-wrap:nowrap;overflow-x:auto;scrollbar-width:none;margin-inline:-14px;padding-inline:14px}
   .subcategorias .filtro{white-space:nowrap;flex:none}
 }
+
+/* espaço para o botão flutuante do WhatsApp não cobrir os créditos no celular */
+@media (max-width:640px){footer{padding-bottom:96px}}
