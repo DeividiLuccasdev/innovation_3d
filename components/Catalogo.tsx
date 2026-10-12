@@ -1,7 +1,8 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import CardProduto from "./CardProduto";
+import { EVENTO_FILTRO } from "./ChatBot";
 import { CATALOGO, CATEGORIAS, ordenarProdutos, type Categoria, type Produto } from "@/lib/produtos";
 import { linkWhatsApp } from "@/lib/whatsapp";
 
@@ -23,6 +24,18 @@ export default function Catalogo({
         (tipo === "Todos" || p.subcategoria === tipo)
     )
   );
+
+  // O assistente pode abrir o catálogo já filtrado
+  useEffect(() => {
+    const filtrar = (e: Event) => {
+      const { categoria: c, subtipo } = (e as CustomEvent<{ categoria: Categoria; subtipo?: string }>).detail;
+      setCategoria(c);
+      setTipo(subtipo ?? "Todos");
+      document.getElementById("produtos")?.scrollIntoView({ behavior: "smooth" });
+    };
+    window.addEventListener(EVENTO_FILTRO, filtrar);
+    return () => window.removeEventListener(EVENTO_FILTRO, filtrar);
+  }, []);
 
   function escolherCategoria(c: Categoria | "Todos") {
     setCategoria(c);

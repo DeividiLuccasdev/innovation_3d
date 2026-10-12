@@ -1,6 +1,7 @@
 /* eslint-disable @next/next/no-img-element */
 import Link from "next/link";
 import Catalogo from "@/components/Catalogo";
+import ChatBot from "@/components/ChatBot";
 import Frete from "@/components/Frete";
 import Vitrine from "@/components/Vitrine";
 import IconeInstagram from "@/components/IconeInstagram";
@@ -180,6 +181,8 @@ export default async function Home() {
           </div>
         </section>
       </main>
+
+      <ChatBot produtos={produtos} />
 
       <a
         className="whats-flutuante"
