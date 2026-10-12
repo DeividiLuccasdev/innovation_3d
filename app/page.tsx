@@ -240,6 +240,12 @@ export default async function Home() {
             </Link>
           </span>
         </div>
+        <p className="creditos mono">
+          Desenvolvido por{" "}
+          <a href="https://portfolio-deividi.vercel.app" target="_blank" rel="noopener noreferrer">
+            Deividi Luccas
+          </a>
+        </p>
       </footer>
     </>
   );
